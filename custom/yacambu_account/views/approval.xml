@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_yacambu_inherit_approval_product_line_view_tree" model="ir.ui.view">
+            <field name="name">yacambu.inherit.approval.product.line.view.tree</field>
+            <field name="model">approval.product.line</field>
+            <field name="inherit_id" ref="approvals.approval_product_line_view_tree"/>
+            <field name="arch" type="xml">
+		<field name="product_id" position="before">
+		    <field name="property_account_expense_id" string="Codigo Presup"/>
+	        </field>
+            </field>
+        </record>
+
+	<record id="view_yacambu_inherit_approval_request_view_form" model="ir.ui.view">
+	    <field name="name">yacambu.inherit.approval.request.view.form</field>
+	    <field name="model">approval.request</field>
+	    <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+	    <field name="arch" type="xml">
+		<field name="partner_id" position="after">
+		    <field name="has_requesting_unit" invisible="1"/>
+		    <field name="requesting_unit"
+			   attrs="{'invisible':[('has_requesting_unit','==','no')],
+				   'required': [('has_requesting_unit','==','required')],
+				   'readonly': [('request_status','not in',('new', 'pending'))]}"/>
+		    </field>
+	    </field>
+    	</record>
+
+	<record id="view_yacambu_inherit_approval_category_view_form" model="ir.ui.view">
+	    <field name="name">yacambu.inherit.approval.category.view.form</field>
+	    <field name="model">approval.category</field>
+	    <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+	    <field name="arch" type="xml">
+		<field name="has_location" position="after">
+		    <field name="has_requesting_unit"
+			   string="Unidad Solicitante" 
+			   widget="radio" 
+			   options="{'horizontal': true}"/>
+		</field>
+	    </field>
+    	</record>
+    </data>
+</odoo>

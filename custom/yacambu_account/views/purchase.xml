@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="purchase_order_yacambu_form_view" model="ir.ui.view">
+	    <field name="name">purchase.order.view.form.inherit.yacambu</field>
+	    <field name="model">purchase.order</field>
+	    <field name="inherit_id" ref="purchase.purchase_order_form"/>
+	    <field name="arch" type="xml">
+		<xpath expr="//field[@name='order_line']/tree//field[@name='product_id']" position="before">
+		    <field name="property_account_expense_id" string="Codigo Presup"/>
+	        </xpath>
+	    </field>
+	</record>
+    </data>
+</odoo>

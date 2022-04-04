@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="partner_files_view_tree" model="ir.ui.view">
+	    <field name="name">partner.files.view.tree</field>
+	    <field name="model">partner.files</field>
+	    <field name="arch" type="xml">
+		<tree editable="bottom">
+		    <field name="name"/>
+		    <field name="modality_id"/>
+		    <field name="property_account_receivable_id"/>
+		    <field name="property_account_payable_id"/>
+		</tree>
+	    </field>
+	</record>
+
+	<record id="partner_files_modality_view_tree" model="ir.ui.view">
+	    <field name="name">partner.files.model.view.tree</field>
+	    <field name="model">partner.files.modality</field>
+	    <field name="arch" type="xml">
+		<tree>
+		    <field name="name"/>
+		    <field name="property_account_receivable_id"/>
+		    <field name="property_account_payable_id"/>
+		</tree>
+	    </field>
+    	</record>
+
+	<record id="partner_files_modality_view_form" model="ir.ui.view">
+	    <field name="name">partner.files.model.view.form</field>
+	    <field name="model">partner.files.modality</field>
+	    <field name="arch" type="xml">
+		<form>
+		    <header></header>
+		    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+			<group>
+		    	    <field name="property_account_receivable_id"/>
+		    	    <field name="property_account_payable_id"/>
+			</group>
+		    </sheet>
+		</form>
+	    </field>
+    	</record>
+
+        <record id="view_partner_file_form" model="ir.ui.view">
+            <field name="name">Pestaña de expedientes</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+        	<xpath expr="//notebook" position="inside">
+	            <page string="Expedientes" >
+			<field name="file_ids" nolabel="1">
+	                    <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="modality_id"/>
+                                <field name="property_account_receivable_id" force_save="1"/>
+		                <field name="property_account_payable_id" force_save="1" />
+                                <field name="state" force_save="1"/>
+                            </tree>
+                        </field>
+                    </page>
+	        </xpath>
+            </field>
+        </record>
+
+	<record id="invoice_inh_file" model="ir.ui.view">
+	    <field name="name">Extension de factura</field>
+	    <field name="model">account.move</field>
+	    <field name="inherit_id" ref="account.view_move_form"/>
+	    <field name="arch" type="xml">
+		<field name="partner_id" position="after">
+		    <field name="file_id" attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}"/>
+		</field>
+	    </field>
+	</record>
+
+	<record id="partner_files_action" model="ir.actions.act_window">
+	    <field name="name">Expediente</field>
+	    <field name="res_model">partner.files</field>
+	    <field name="view_mode">tree</field>
+	</record>
+
+	<record id="partner_files_modality_action" model="ir.actions.act_window">
+	    <field name="name">Modalidad</field>
+	    <field name="res_model">partner.files.modality</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+
+    </data>
+</odoo>

@@ -278,3 +278,43 @@ class HrExpenseBinaural(models.Model):
             if expense.company_currency_id:
                 amount = expense.total_amount * value_rate
             expense.total_amount_company = amount
+
+    def default_currency_rate(self):
+        rate = 0
+        alternate_currency = int(
+            self.env['ir.config_parameter'].sudo().get_param('curreny_foreign_id'))
+        if alternate_currency:
+            currency = self.env['res.currency.rate'].search([('currency_id', '=', alternate_currency)], limit=1,
+                                                            order='name desc')
+            rate = currency.rate if currency.currency_id.name == 'VEF' else currency.vef_rate
+
+        return rate
+
+    @api.model
+    def create(self, vals):
+        # OVERRIDE
+        flag = False
+        rate = 0
+        print("vals", vals)
+        rate = vals.get('foreign_currency_rate', False)
+        if rate:
+            rate = round(rate, 2)
+            alternate_currency = int(
+                self.env['ir.config_parameter'].sudo().get_param('curreny_foreign_id'))
+            if alternate_currency:
+                currency = self.env['res.currency.rate'].search([('currency_id', '=', alternate_currency)], limit=1,
+                                                                order='name desc')
+                if rate != currency.rate:
+                    flag = True
+        res = super(HrExpenseBinaural, self).create(vals)
+        if flag:
+            old_rate = self.default_currency_rate()
+            # El usuario xxxx ha usado una tasa personalizada, la tasa del sistema para la fecha del pago xxx es de xxxx y ha usada la tasa personalizada xxx
+            display_msg = "El usuario " + self.env.user.name + \
+                " ha usado una tasa personalizada,"
+            display_msg += " la tasa del sistema para la fecha del pago " + \
+                str(fields.Date.today()) + " es de "
+            display_msg += str(old_rate) + \
+                " y ha usada la tasa personalizada " + str(rate)
+            res.message_post(body=display_msg)
+        return res

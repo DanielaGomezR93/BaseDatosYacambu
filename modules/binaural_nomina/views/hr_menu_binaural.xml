@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Configuracion Vzla -->
+    <menuitem
+        id="menu_hr_master_configuration"
+        name="Master Venezuela"
+        parent="hr_work_entry_contract.menu_hr_payroll_configuration"
+        sequence="90"
+        groups="hr_payroll.group_hr_payroll_user"
+    />    
+    
+</odoo>

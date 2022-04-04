@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
-	    <record id="wizard_report_comisiones_view" model="ir.ui.view">
+	    <record id="wizard_report_municipality_retention_view" model="ir.ui.view">
             <field name="name">wizard.municipality.retentions.view</field>
             <field name="model">wizard.municipality.retentions</field>
             <field name="arch" type="xml">
-                <form string="Reportes de Efectividad de vendedores">
+                <form string="Descargar Comprobante de Retencion">
                     <sheet>
                         <field name="retention_id" force_save="1" invisible="1"/>
                         <div style="display: flex; justify-content: center">

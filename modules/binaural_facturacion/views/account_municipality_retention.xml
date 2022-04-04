@@ -5,14 +5,15 @@
         <field name="arch" type="xml">
             <form string="Retention">
                 <header>
-                    <button name="action_validate" attrs="{'invisible': [('name','!=', False)]}" type="object" string="Validar" class="btn btn-primary" />
+                    <button name="action_validate" attrs="{'invisible': [('state','!=', 'draft')]}" type="object" string="Validar" class="btn btn-primary" />
                     <button name="action_open_wizard" type="object" string="Descargar Comprobante" class="btn btn-primary" />
+                    <field name="state" widget="statusbar" nolabel="1" />
                 </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="type" />
-                            <field name="name" />
+                            <field name="name" attrs="{'readonly': [('type','in', ['in_invoice'])], 'required': [('type','in', ['out_invoice'])]}" />
                         </group>
                         <group>
                             <field name="date" />
@@ -50,7 +51,7 @@
         <field name="arch" type="xml">
             <tree string="Lineas de Impuestos Municipales" editable="bottom">
                 <field name="name" />
-                <field name="invoice_id" domain="[('partner_id','=',parent.partner_id),('state','=','posted'), ('amount_residual','>',0)]" />
+                <field name="invoice_id" domain="[('partner_id','=',parent.partner_id),('state','=','posted'), ('municipality_tax','=',False), ('amount_residual','>',0)]" />
                 <field name="total_invoice" />
                 <field name="invoice_amount_untaxed" />
                 <field name="economic_activity_id" />

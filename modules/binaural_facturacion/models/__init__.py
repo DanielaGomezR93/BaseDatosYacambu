@@ -10,3 +10,5 @@ from . import account_journal
 from . import account_bank_statement
 from . import inherited_res_company
 from . import account_municipality_retentions
+from . import account_municipality_retentions_line
+from . import inherited_product_category

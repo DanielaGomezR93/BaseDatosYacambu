@@ -110,9 +110,9 @@
 							<div class="o_setting_left_pane"></div>
 							<div class="o_setting_right_pane">
 								<div>
-									<span class="o_form_label">Cuenta de Retenciones Municipales</span>
+									<span class="o_form_label">Cuenta de Retenciones Municipales Proveedores</span>
 									<div class="text-muted">
-			                            Ingrese la cuenta contable asignada para la retención de impuestos municipales
+			                            Ingrese la cuenta contable asignada para la retención de impuestos municipales Proveedores
 			                        </div>
 									<field name="account_municipal_retention" attrs="{'required':[('use_municipal_retention','=', True)]}" options="{'no_create_edit': True, 'no_open': True}" />
 								</div>
@@ -123,11 +123,36 @@
 							<div class="o_setting_left_pane"></div>
 							<div class="o_setting_right_pane">
 								<div>
-									<span class="o_form_label">Diario de Retenciones Municipales</span>
+									<span class="o_form_label">Diario de Retenciones Municipales Proveedores</span>
 									<div class="text-muted">
-			                            Ingrese el diario para las retenciones de impuestos municipales
+			                            Ingrese el diario para las retenciones de impuestos municipales Proveedores
 			                        </div>
 									<field name="journal_municipal_retention" attrs="{'required':[('use_municipal_retention','=', True)]}" options="{'no_create_edit': True, 'no_open': True}" />
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-lg-6 o_setting_box" id="cta_municipal_retention_clients">
+							<div class="o_setting_left_pane"></div>
+							<div class="o_setting_right_pane">
+								<div>
+									<span class="o_form_label">Cuenta de Retenciones Municipales Clientes</span>
+									<div class="text-muted">
+			                            Ingrese la cuenta contable asignada para la retención de impuestos municipales Clientes
+			                        </div>
+									<field name="account_municipal_retention_clients" attrs="{'required':[('use_municipal_retention','=', True)]}" options="{'no_create_edit': True, 'no_open': True}" />
+								</div>
+							</div>
+						</div>
+
+						<div class="col-12 col-lg-6 o_setting_box" id="jnal_municipal_retention_clients">
+							<div class="o_setting_left_pane"></div>
+							<div class="o_setting_right_pane">
+								<div>
+									<span class="o_form_label">Diario de Retenciones Municipales Clientes</span>
+									<div class="text-muted">
+			                            Ingrese el diario para las retenciones de impuestos municipales Clientes
+			                        </div>
+									<field name="journal_municipal_retention_clients" attrs="{'required':[('use_municipal_retention','=', True)]}" options="{'no_create_edit': True, 'no_open': True}" />
 								</div>
 							</div>
 						</div>

@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record id="view_yacambu_inherit_view_analytic_account_form" model="ir.ui.view">
+            <field name="name">yacambu.inherit.analytic.account.view.form</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+		<sheet position="before">
+		    <header>
+			<button name="action_create_location_wizard" 
+				string="Nueva Ubicación"
+				type="object"
+				class="oe_highlight"/>
+		    </header>
+		</sheet>
+            </field>
+        </record>
+    </data>
+</odoo>

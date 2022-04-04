@@ -30,7 +30,7 @@ class PurchaseOrderBinauralCompras(models.Model):
                 return {'domain': {
                     'partner_id': [('customer_rank', '>=', 1)],
                 }}
-            elif record.filter_partner == 'supplier': 
+            elif record.filter_partner == 'supplier':
                 return {'domain': {
                     'partner_id': [('supplier_rank', '>=', 1)],
                 }}
@@ -49,6 +49,17 @@ class PurchaseOrderBinauralCompras(models.Model):
             return alternate_currency
         else:
             return False
+
+    def default_currency_rate(self):
+        rate = 0
+        alternate_currency = int(
+            self.env['ir.config_parameter'].sudo().get_param('curreny_foreign_id'))
+        if alternate_currency:
+            currency = self.env['res.currency.rate'].search([('currency_id', '=', alternate_currency)], limit=1,
+                                                            order='name desc')
+            rate = currency.rate if currency.currency_id.name == 'VEF' else currency.vef_rate
+
+        return rate
 
     @api.onchange('foreign_currency_id', 'foreign_currency_date')
     def _compute_foreign_currency_rate(self):
@@ -85,11 +96,11 @@ class PurchaseOrderBinauralCompras(models.Model):
             name_foreign_currency = order.foreign_currency_id.name
             name_base_currency = 'USD' if name_foreign_currency == 'VEF' else 'VEF'
             value_rate = 0
-            
+
             if name_foreign_currency:
                 value_rate = decimal_function.getCurrencyValue(
-                rate=order.foreign_currency_rate, base_currency=name_base_currency, foreign_currency=name_foreign_currency)
-            
+                    rate=order.foreign_currency_rate, base_currency=name_base_currency, foreign_currency=name_foreign_currency)
+
             for line in order.order_line:
                 foreign_amount_untaxed += line.price_subtotal
                 foreign_amount_tax += line.price_tax
@@ -263,14 +274,14 @@ class PurchaseOrderBinauralCompras(models.Model):
                 len(res),
                 group.id
             ) for group, amounts in res]
-            
+
             name_foreign_currency = move.foreign_currency_id.name
             name_base_currency = 'USD' if name_foreign_currency == 'VEF' else 'VEF'
             value_rate = 0
-            
+
             if name_foreign_currency:
                 value_rate = decimal_function.getCurrencyValue(
-                rate=move.foreign_currency_rate, base_currency=name_base_currency, foreign_currency=name_foreign_currency)
+                    rate=move.foreign_currency_rate, base_currency=name_base_currency, foreign_currency=name_foreign_currency)
 
             move.foreign_amount_by_group = [(
                 group.name, amounts['amount'] * value_rate,
@@ -303,3 +314,32 @@ class PurchaseOrderBinauralCompras(models.Model):
          @return list
         """
         return [line.taxes_id.id]
+
+    @api.model
+    def create(self, vals):
+        # OVERRIDE
+        flag = False
+        rate = 0
+        print("vals", vals)
+        rate = vals.get('foreign_currency_rate', False)
+        if rate:
+            rate = round(rate, 2)
+            alternate_currency = int(
+                self.env['ir.config_parameter'].sudo().get_param('curreny_foreign_id'))
+            if alternate_currency:
+                currency = self.env['res.currency.rate'].search([('currency_id', '=', alternate_currency)], limit=1,
+                                                                order='name desc')
+                if rate != currency.rate:
+                    flag = True
+        res = super(PurchaseOrderBinauralCompras, self).create(vals)
+        if flag:
+            old_rate = self.default_currency_rate()
+            # El usuario xxxx ha usado una tasa personalizada, la tasa del sistema para la fecha del pago xxx es de xxxx y ha usada la tasa personalizada xxx
+            display_msg = "El usuario " + self.env.user.name + \
+                " ha usado una tasa personalizada,"
+            display_msg += " la tasa del sistema para la fecha del pago " + \
+                str(fields.Date.today()) + " es de "
+            display_msg += str(old_rate) + \
+                " y ha usada la tasa personalizada " + str(rate)
+            res.message_post(body=display_msg)
+        return res

@@ -175,7 +175,7 @@ class SaleOrderBinauralVentas(models.Model):
         if alternate_currency:
             currency = self.env['res.currency.rate'].search([('currency_id', '=', alternate_currency)], limit=1,
                                                             order='name desc')
-            rate = currency.rate
+            rate = currency.rate if currency.currency_id.name == 'VEF' else currency.vef_rate
 
         return rate
 

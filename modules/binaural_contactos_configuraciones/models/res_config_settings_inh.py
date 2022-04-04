@@ -34,9 +34,13 @@ class ResConfigSettingBinauralContactos(models.TransientModel):
         "Uso de Retenciones Municipales", implied_group='binaural_contactos_configuraciones.use_municipal_retention', default=False)
 
     account_municipal_retention = fields.Many2one(
-        'account.account', 'Cuenta de Retenciones Municipales')
+        'account.account', 'Cuenta de Retenciones Municipales Proveedores')
     journal_municipal_retention = fields.Many2one(
-        'account.journal', 'Diario de Retenciones Municipales')
+        'account.journal', 'Diario de Retenciones Municipales Proveedores')
+    account_municipal_retention_clients = fields.Many2one(
+        'account.account', 'Cuenta de Retenciones Municipales Clientes')
+    journal_municipal_retention_clients = fields.Many2one(
+        'account.journal', 'Diario de Retenciones Municipales Clientes')
 
     @api.model
     def get_values(self):
@@ -64,6 +68,10 @@ class ResConfigSettingBinauralContactos(models.TransientModel):
             curreny_foreign_id=int(params.get_param('curreny_foreign_id')),
             journal_municipal_retention=int(
                 params.get_param('journal_municipal_retention')),
+            account_municipal_retention_clients=int(
+                params.get_param('account_municipal_retention_clients')),
+            journal_municipal_retention_clients=int(
+                params.get_param('journal_municipal_retention_clients')),
         )
         return res
 
@@ -93,4 +101,8 @@ class ResConfigSettingBinauralContactos(models.TransientModel):
             'curreny_foreign_id', self.curreny_foreign_id.id)
         self.env['ir.config_parameter'].sudo().set_param(
             'journal_municipal_retention', self.journal_municipal_retention.id)
+        self.env['ir.config_parameter'].sudo().set_param(
+            'journal_municipal_retention_clients', self.journal_municipal_retention_clients.id)
+        self.env['ir.config_parameter'].sudo().set_param(
+            'account_municipal_retention_clients', self.account_municipal_retention_clients.id)
         super(ResConfigSettingBinauralContactos, self).set_values()

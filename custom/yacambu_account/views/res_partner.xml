@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="yacambu_account_res_partner_inherit_view_search" model="ir.ui.view">
+	    <field name="name">yacambu.account.res.partner.inherit.view.search</field>
+	    <field name="model">res.partner</field>
+	    <field name="inherit_id" ref="base.view_res_partner_filter"/>
+	    <field name="arch" type="xml">
+		<field name="category_id" position="before">
+		    <field name="file_ids"/>
+		</field>
+	    </field>
+	</record>
+    </data>
+</odoo>

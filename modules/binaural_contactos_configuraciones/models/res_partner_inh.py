@@ -58,7 +58,7 @@ class ResPartnerBinauralContactos(models.Model):
         'res.country.city', 'Ciudad', track_visibility='onchange')
 
     economic_activity_id = fields.Many2one(
-        'economic.activity', string='Actividad Económica')
+        'economic.activity', string='Código de Actividad Económica')
     activity = fields.Text(string='Actividad Económica',
                            related="economic_activity_id.description")
     aliquot = fields.Float(

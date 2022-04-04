@@ -1,4 +1,6 @@
 from inspect import signature
+from locale import currency
+from unicodedata import name
 from odoo import models, fields, http, tools
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
@@ -28,7 +30,8 @@ class WizardMaxcamComision(models.TransientModel):
         }
 
     def _excel_file(self, tabla, nombre, retention_id):
-        company = self.env['res.company'].browse(self.env.company.id)
+        company = self.env.company
+        currency_symbol = self.env.ref('base.VEF').symbol
         retention = self.env['account.municipality.retentions'].browse(
             retention_id)
         data2 = BytesIO()
@@ -113,7 +116,8 @@ class WizardMaxcamComision(models.TransientModel):
         worksheet2.set_row(24, 23, merge_format)
         columnas = list(datos.columns.values)
         columns2 = [{'header': r} for r in columnas]
-        money_format = workbook.add_format({'num_format': '#,##0.00 "bs"'})
+        money_format = workbook.add_format(
+            {'num_format': '#,##0.00 "'+currency_symbol+'"'})
         control_format = workbook.add_format({'align': 'center'})
         porcent_format = workbook.add_format({'num_format': '0.0 %'})
         columns2[0].update({'format': control_format})
@@ -219,12 +223,22 @@ class ControllerMunicipalityRetentionXlsx(http.Controller):
             return request.not_found()
 
         tabla = report_obj._get_excel_municipality_retention(int(retention_id))
+        retention = request.env['account.municipality.retentions'].browse(
+            int(retention_id))
+        name_document = ''
+
+        if retention.state == 'draft':
+            name_document = f"Ret Municipal Borrador {retention.date.strftime('%d-%m-%Y')}"
+        elif retention.state == 'emitted':
+            name_document = f"Ret Municipal {retention.name} {retention.date.strftime('%d-%m-%Y')}"
+        else:
+            name_document = "Ret Municipal Cancelada"
 
         filecontent = report_obj._excel_file(
-            tabla, 'nombre', int(retention_id))
+            tabla, name_document, int(retention_id))
 
         if not filecontent:
             return Response("No hay datos para mostrar", content_type='text/html;charset=utf-8', status=500)
         return request.make_response(filecontent,
                                      [('Content-Type', 'application/pdf'), ('Content-Length', len(filecontent)),
-                                      ('Content-Disposition', content_disposition('nombre'+'.xlsx'))])
+                                      ('Content-Disposition', content_disposition(name_document+'.xlsx'))])

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<!-- GRUPOS PARA PERMISOS DE APROBACIONES -->
+	<record model="ir.module.category" id="yacambu_permission_approvals">
+            <field name="name">Permisos de Aprobaciones</field>
+            <field name="description">Agregar permisos de aprobaciones</field>
+	</record>
+	<record id="yacambu_permissions_send_request" model="res.groups">
+            <field name="name">Enviar Requisiciones</field>
+            <field name="category_id" ref="yacambu_permission_approvals"/>
+	</record>
+    </data>
+</odoo>

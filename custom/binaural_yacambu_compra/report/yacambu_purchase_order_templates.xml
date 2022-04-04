@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+	<template id="yacambu_purchase_inherit_report_purchaseorder_document" inherit_id="purchase.report_purchaseorder_document">
+	    <xpath expr="//div[@id='total']" position="after">
+                <div style="position:fixed;top:850px;page-break-inside:avoid;">
+                    <div class="row mb64">
+                        <div class="col-4">
+                            <center>________________________________________</center>
+                            <center>Elaborado Por</center>
+                        </div>
+                        <div class="col-4">
+                            <center>________________________________________</center>
+                            <center>Revisado Por</center>
+                        </div>
+                        <div class="col-4">
+                            <center>________________________________________</center>
+                            <center>Aprobado Por</center>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+	</template>
+    </data>
+</odoo>

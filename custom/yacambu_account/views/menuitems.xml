@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<menuitem id="yacambu_restful.menu_partner_files" name="Expedientes"
+		  action="partner_files_action"
+		  parent="contacts.menu_contacts"
+		  sequence="10"/>
+
+	<menuitem id="yacambu_restful.menu_partner_file_modality" name="Modalidades"
+		  action="partner_files_modality_action"
+		  parent="binaural_contactos_configuraciones.master_configuration"
+		  sequence="11"/>
+    </data>
+</odoo>

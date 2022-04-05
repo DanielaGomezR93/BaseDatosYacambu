@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_yacambu_inherit_account_budget_crossovered_budget_line_pivot" model="ir.ui.view">
+            <field name="name">yacambu.inherit.account.budget.crossovered.budget.line.view.pivot</field>
+            <field name="model">crossovered.budget.lines</field>
+            <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_pivot"/>
+            <field name="arch" type="xml">
+		<field name="theoritical_amount" position="after">
+		    <field name="variation" type="measure" string="Variación"/>
+		    <field name="variation_percentage" type="measure" string="% de variación" widget="percentage"/>
+		    <field name="available_amount" type="measure" string="Disponible"/>
+	        </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_yacambu_inherit_account_analytic_line_tree" model="ir.ui.view">
+            <field name="name">yacambu.inherit.account.analytic.line.view.tree</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
+            <field name="arch" type="xml">
+		<tree position="inside">
+		    <field name="account_budget_post_ids" string="Situaciones presupuestarias"/>
+	        </tree>
+            </field>
+        </record>
+
+        <record id="view_yacambu_inherit_account_analytic_line_pivot" model="ir.ui.view">
+            <field name="name">yacambu.inherit.account.analytic.line.view.pivot</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_line_pivot"/>
+            <field name="arch" type="xml">
+		<pivot position="inside">
+		    <field name="account_budget_post_ids" string="Situaciones presupuestarias"/>
+	        </pivot>
+            </field>
+        </record>
+
+        <record id="view_yacambu_inherit_account_analytic_line_filter" model="ir.ui.view">
+            <field name="name">yacambu.inherit.account.analytic.line.view.filter</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_line_filter"/>
+            <field name="arch" type="xml">
+		<field name="name" position="after">
+		    <field name="account_budget_post_ids" string="Situaciones presupuestarias"/>
+	        </field>
+		<group position="inside">
+		    <filter string="Situacion Presupuestaria" name="account_budget_post_ids" context="{'group_by': 'account_budget_post_ids'}"/>
+		</group>
+            </field>
+        </record>
+
+        <record id="view_yacambu_inherit_account_account_form" model="ir.ui.view">
+            <field name="name">yacambu.inherit.account.account.view.form</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+		<field name="user_type_id" position="after">
+		    <field name="account_budget_post_ids" string="Situaciones presupuestarias"/>
+	        </field>
+            </field>
+        </record>
+
+        <record id="view_yacambu_inherit_account_analytic_line_form" model="ir.ui.view">
+            <field name="name">yacambu.inherit.account.analytic.line.view.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+            <field name="arch" type="xml">
+		<field name="name" position="after">
+		    <field name="account_budget_post_ids" string="Situaciones presupuestarias"/>
+	        </field>
+            </field>
+        </record>
+    </data>
+</odoo>

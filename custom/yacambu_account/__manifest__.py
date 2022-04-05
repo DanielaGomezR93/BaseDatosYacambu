@@ -12,6 +12,7 @@
         "binaural_contactos_configuraciones",
         "contacts",
         "purchase",
+        "yacambu_restful",
     ],
     "data": [
         "views/approval.xml",
@@ -20,6 +21,7 @@
         "views/res_partner.xml",
         "views/menuitems.xml",
         "views/account_asset.xml",
+        "views/account_payment.xml",
         "report/yacambu_account_payment_templates.xml",
         "security/ir.model.access.csv",
     ],

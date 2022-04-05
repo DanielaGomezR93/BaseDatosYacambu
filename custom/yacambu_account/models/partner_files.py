@@ -100,8 +100,9 @@ class PartnerPartnerFiles(models.Model):
 
     @api.onchange("file_ids")
     def _onchange_file_ids(self):
-        self.property_account_receivable_id = self.file_ids[-1].property_account_receivable_id if any(self.file_ids) else None
-        self.property_account_payable_id = self.file_ids[-1].property_account_payable_id if any(self.file_ids) else None
+        if any(self.file_ids):
+            self.property_account_receivable_id = self.file_ids[-1].property_account_receivable_id
+            self.property_account_payable_id = self.file_ids[-1].property_account_payable_id
 
 
 class InvoicePartnerFiles(models.Model):

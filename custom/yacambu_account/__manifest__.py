@@ -8,7 +8,6 @@
         "account",
         "account_accountant",
         "account_asset",
-        "account_budget",
         "approvals",
         "binaural_contactos_configuraciones",
         "contacts",
@@ -16,7 +15,6 @@
         "yacambu_restful",
     ],
     "data": [
-        "views/account_analytic.xml",
         "views/approval.xml",
         "views/partner_files.xml",
         "views/purchase.xml",

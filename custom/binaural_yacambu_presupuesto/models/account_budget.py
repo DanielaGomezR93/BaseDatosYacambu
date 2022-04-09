@@ -1,6 +1,15 @@
 from odoo import api, fields, models
 
 
+class CrossoveredBudget(models.Model):
+    _inherit = "crossovered.budget"
+
+    currency_id = fields.Many2one("res.currency", related="company_id.currency_id")
+    available_amount = fields.Monetary(
+        compute=lambda b: sum(b.crossovered_budget_line.mapped("available_amount")),
+        string="Disponible", store=True)
+
+
 class CrossoveredBudgetLines(models.Model):
     _inherit = "crossovered.budget.lines"
 

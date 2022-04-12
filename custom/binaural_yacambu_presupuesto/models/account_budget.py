@@ -6,9 +6,27 @@ class CrossoveredBudget(models.Model):
 
     currency_id = fields.Many2one("res.currency", related="company_id.currency_id")
     available_amount = fields.Monetary(
-        compute=lambda b: sum(b.crossovered_budget_line.mapped("available_amount")),
-        string="Disponible", store=True)
+        compute="_compute_available_amount", string="Disponible", store=True)
+    has_been_transfered = fields.Boolean(string="¿Se ha realizado una transferencia de este presupuesto?", default=False)
 
+    @api.depends("crossovered_budget_line")
+    def _compute_available_amount(self):
+        for budget in self:
+            budget.available_amount = 0
+            budget.available_amount += sum(budget.crossovered_budget_line.mapped("available_amount"))
+    
+    def action_transfer_wizard(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Transferencia entre presupuestos",
+            "res_model": "crossovered.budget.transfer.wizard",
+            "target": "new",
+            "view_id": self.env.ref("binaural_yacambu_presupuesto.view_crossovered_budget_transfer_wizard").id,
+            "view_mode": "form",
+            "context": {
+                "default_origin_budget_id": self.id,
+            }
+        }
 
 class CrossoveredBudgetLines(models.Model):
     _inherit = "crossovered.budget.lines"

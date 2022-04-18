@@ -22,7 +22,7 @@
 		<footer>
 		    <button name="action_create_stock_location" string="Crear"
 			    type="object" class="oe_highlight"/>
-               	    <button string="Cancel" class="btn btn-default" special="cancel"/>
+               	    <button string="Cancelar" class="btn btn-default" special="cancel"/>
 		</footer>
 	    </form>
 	</field>

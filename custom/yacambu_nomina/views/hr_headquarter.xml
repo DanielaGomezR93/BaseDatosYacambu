@@ -27,6 +27,7 @@
                             </h1>
                         </div>
 			<group>
+			    <field name="active" invisible="1"/>
 			    <span class="o_form_label o_td_label" name="address_name">
 				<b>Dirección</b>
 			    </span>

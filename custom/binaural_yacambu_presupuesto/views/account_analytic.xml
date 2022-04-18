@@ -18,7 +18,8 @@
             <field name="inherit_id" ref="analytic.view_account_analytic_line_pivot"/>
             <field name="arch" type="xml">
 		<pivot position="inside">
-		    <field name="account_budget_post_ids" string="Situaciones presupuestarias"/>
+		    <field name="file_id" string="Expediente" type="row"/>
+		    <field name="modality_id" string="Modalidad" type="row"/>
 	        </pivot>
             </field>
         </record>
@@ -34,9 +35,6 @@
 			   filter_domain="['|', ('general_account_id.code', '=ilike', self+'%'),
 			    			('general_account_id.name', '=ilike', self+'%')]"/>
 	        </field>
-		<group position="inside">
-		    <filter string="Situacion Presupuestaria" name="account_budget_post_ids" context="{'group_by': 'account_budget_post_ids'}"/>
-		</group>
             </field>
         </record>
 
@@ -58,6 +56,8 @@
             <field name="arch" type="xml">
 		<field name="name" position="after">
 		    <field name="account_budget_post_ids" string="Situaciones presupuestarias"/>
+		    <field name="modality_id"/>
+		    <field name="file_id"/>
 	        </field>
             </field>
         </record>

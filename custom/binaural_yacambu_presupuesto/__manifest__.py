@@ -7,6 +7,7 @@
         Modulo que contiene las modificaciones de presupuesto de Yacambu ERP.
     """,
     "depends": [
+        "account",
         "account_budget",
         "yacambu_account",
     ],

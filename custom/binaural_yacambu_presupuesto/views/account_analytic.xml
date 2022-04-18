@@ -17,10 +17,10 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="analytic.view_account_analytic_line_pivot"/>
             <field name="arch" type="xml">
-		<pivot position="inside">
-		    <field name="file_id" string="Expediente" type="row"/>
+		<field name="partner_id" position="replace">
 		    <field name="modality_id" string="Modalidad" type="row"/>
-	        </pivot>
+		    <field name="file_id" string="Expediente" type="row"/>
+	        </field>
             </field>
         </record>
 
@@ -34,6 +34,7 @@
 		    <field name="general_account_id" string="Cuenta Contable"
 			   filter_domain="['|', ('general_account_id.code', '=ilike', self+'%'),
 			    			('general_account_id.name', '=ilike', self+'%')]"/>
+		    <filter name="modality_id" string="Tiene Modalidad" domain="[('modality_id','!=',False)]"/>
 	        </field>
             </field>
         </record>

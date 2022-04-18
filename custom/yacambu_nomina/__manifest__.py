@@ -13,6 +13,7 @@
     "data": [
         "security/ir.model.access.csv",
         "views/hr_headquarter.xml",
+        "views/hr_nominal_position.xml",
         "views/menuitems.xml",
     ],
     "images": ["static/description/icon.png"],

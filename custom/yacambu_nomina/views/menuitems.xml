@@ -5,5 +5,9 @@
 		  action="hr_headquarter_action"
 		  parent="hr.menu_human_resources_configuration"
 		  sequence="11"/>
+	<menuitem id="menu_hr_nominal_position" name="Cargos Nominales"
+		  action="hr_nominal_position_action"
+		  parent="hr.menu_human_resources_configuration"
+		  sequence="12"/>
     </data>
 </odoo>

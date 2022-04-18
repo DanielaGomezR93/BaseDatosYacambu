@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="hr_headquarter_view_tree" model="ir.ui.view">
+	    <field name="name">hr.headquarter.view.tree</field>
+	    <field name="model">hr.headquarter</field>
+	    <field name="arch" type="xml">
+		<tree editable="bottom" delete="false">
+		    <field name="name"/>
+		    <field name="address"/>
+		    <field name="city_id"/>
+		    <field name="state_id"/>
+		</tree>
+	    </field>
+	</record>
+
+	<record id="hr_headquarter_view_form" model="ir.ui.view">
+	    <field name="name">hr.headquarter.view.form</field>
+	    <field name="model">hr.headquarter</field>
+	    <field name="arch" type="xml">
+		<form delete="false">
+		    <header></header>
+		    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+			<group>
+		    	    <field name="address"/>
+		    	    <field name="city_id"/>
+		    	    <field name="state_id"/>
+			</group>
+		    </sheet>
+		</form>
+	    </field>
+    	</record>
+
+	<record id="hr_headquarter_action" model="ir.actions.act_window">
+	    <field name="name">Sedes Administrativas</field>
+	    <field name="res_model">hr.headquarter</field>
+	    <field name="view_mode">tree,form</field>
+	</record>
+    </data>
+</odoo>

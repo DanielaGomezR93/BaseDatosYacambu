@@ -8,10 +8,14 @@
         de yacambu ERP.
     """,
     "depends": [
-        "base", "binaural_contactos_configuraciones", "hr",
+        "base",
+        "binaural_contactos_configuraciones",
+        "hr",
+        "hr_payroll",
     ],
     "data": [
         "security/ir.model.access.csv",
+        "views/hr_employee.xml",
         "views/hr_headquarter.xml",
         "views/hr_nominal_position.xml",
         "views/menuitems.xml",

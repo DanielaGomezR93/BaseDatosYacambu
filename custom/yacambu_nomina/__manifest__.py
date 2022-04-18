@@ -1,5 +1,5 @@
 {
-    "name": "Binaural Nomina",
+    "name": "Yacambu Nomina",
     "version": "1.0.1",
     "author": "Binaural",
     "support": "contacto@binauraldev.com",
@@ -8,12 +8,12 @@
         de yacambu ERP.
     """,
     "depends": [
-        "base", "hr",
+        "base", "binaural_contactos_configuraciones", "hr",
     ],
     "data": [
+        "security/ir.model.access.csv",
         "views/hr_headquarter.xml",
         "views/menuitems.xml",
-        "security/ir.model.access",
     ],
     "images": ["static/description/icon.png"],
     "installable": True,

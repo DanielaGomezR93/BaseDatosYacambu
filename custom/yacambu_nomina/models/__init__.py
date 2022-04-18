@@ -1,1 +1,1 @@
-from . import hr_headquarters
+from . import hr_headquarter

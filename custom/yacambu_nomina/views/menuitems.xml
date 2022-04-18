@@ -3,8 +3,7 @@
     <data>
 	<menuitem id="menu_hr_headquarter" name="Sedes Administrativas"
 		  action="hr_headquarter_action"
-		  parent="hr.menu_human_resources_configuration
-"
+		  parent="hr.menu_human_resources_configuration"
 		  sequence="11"/>
     </data>
 </odoo>

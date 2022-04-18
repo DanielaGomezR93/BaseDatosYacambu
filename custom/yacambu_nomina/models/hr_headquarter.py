@@ -1,15 +1,20 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class HrHeadquarter(models.Model):
     _name = "hr.headquarter"
     _description = "Sede Administrativa"
 
-    name = fields.Char(string="Nombre")
-    active = fields.Boolean()
-    address = fields.Char(string="Dirección")
-    city_id = fields.Many2one("res.country.city", string="Ciudad")
-    state_id = fields.Many2one("res.country.state", string="Estado")
+    name = fields.Char(string="Nombre", required=True)
+    active = fields.Boolean(default=True)
+    street = fields.Char(string="Calle")
+    street2 = fields.Char(string="Calle 2")
+    city_id = fields.Many2one(
+        "res.country.city", string="Ciudad", required=True, domain="[('state_id', '=', state_id)]")
+    state_id = fields.Many2one(
+        "res.country.state", string="Estado", required=True, domain="[('country_id', '=', country_id)]")
+    zip = fields.Char(string="Código Postal", change_default=True)
+    country_id = fields.Many2one("res.country", string="País")
 
     _sql_constraints = [
         ("unique_name", "UNIQUE(name)",

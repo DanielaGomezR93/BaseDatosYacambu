@@ -25,11 +25,14 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/hr_employee_binaural.xml',        
+        'views/hr_payslip_binaural.xml',
         'views/views.xml',
-        'views/templates.xml',                        
-        'views/hr_menu_binaural.xml',
-        'views/res_config.xml',
-        'data/master_data.xml'
+        'views/templates.xml',               
+        'views/hr_menu_binaural.xml',        
+        'views/res_config.xml',        
+        'data/master_data.xml',
+        'data/rules_data.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

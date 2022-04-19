@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <div t-inherit="web.PivotGroupBySelection" t-inherit-mode="extension">
+	<xpath expr="//a[hasclass('dropdown-item')][4]" position="after">
+            <a role="menuitem" t-att-data-field="field.name" href="#" class="dropdown-item" t-on-click.prevent="_onClickMenuGroupBy(field, 'third')">Cuatrimestre</a>
+	</xpath>
+    </div>
+
+</templates>

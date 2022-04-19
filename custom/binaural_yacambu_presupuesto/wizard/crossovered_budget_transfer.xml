@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_crossovered_budget_transfer_wizard" model="ir.ui.view">
+	<field name="name">crossovered.budget.transfer.wizard.view</field>
+	<field name="model">crossovered.budget.transfer.wizard</field>
+	<field name="type">form</field>
+	<field name="arch" type="xml">
+	    <form>
+		<sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+		    <group>
+			<group>
+			    <field name="date"/>
+			    <field name="origin_budget_id"/>
+			    <field name="origin_available_amount"/>
+			</group>
+			<group>
+		    	    <field name="destination_budget_id"/>
+		    	    <field name="amount_to_be_transfered"/>
+		    	    <field name="destination_available_amount"/>
+			</group>
+		    </group>
+		    <group>
+			<group>
+			    <field name="updated_amount"/>
+			</group>
+		    </group>
+		</sheet>
+		<footer>
+		    <button name="action_transfer_amount" string="Crear"
+			    type="object" class="oe_highlight"/>
+               	    <button string="Cancelar" class="btn btn-default" special="cancel"/>
+		</footer>
+	    </form>
+	</field>
+    </record>
+</odoo>

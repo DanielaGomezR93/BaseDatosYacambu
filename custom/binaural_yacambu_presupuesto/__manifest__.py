@@ -7,12 +7,16 @@
         Modulo que contiene las modificaciones de presupuesto de Yacambu ERP.
     """,
     "depends": [
+        "account",
         "account_budget",
         "yacambu_account",
     ],
     "data": [
         "views/account_analytic.xml",
         "views/account_budget.xml",
+        "views/crossovered_budget_transfer.xml",
+        "wizard/crossovered_budget_transfer.xml",
+        "security/ir.model.access.csv",
     ],
     "images": ["static/description/icon.png"],
     "installable": True,

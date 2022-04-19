@@ -11,7 +11,7 @@
         "stock",
     ],
     "data": [
-        "wizards/stock_location_create.xml",
+        "wizard/stock_location_create.xml",
         "views/account.xml",
         "security/ir.model.access.csv",
     ],

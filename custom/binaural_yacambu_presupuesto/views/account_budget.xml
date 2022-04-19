@@ -14,5 +14,28 @@
             </field>
         </record>
 
+        <record id="view_yacambu_inherit_account_budget_crossovered_budget_form" model="ir.ui.view">
+            <field name="name">yacambu.inherit.account.budget.crossovered.budget.view.form</field>
+            <field name="model">crossovered.budget</field>
+            <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+            <field name="arch" type="xml">
+		<header>
+		    <button name="action_transfer_wizard"
+			    string="Transferir"
+			    type="object"
+			    class="oe_highlight"
+			    attrs="{'invisible': [('state', 'not in', ('confirm', 'validate'))]}"/>
+	        </header>
+		<button name="action_budget_draft" position="replace">
+		    <button string="Restablecer a Borrador" name="action_budget_draft" type="object"
+			    attrs="{'invisible': ['|', ('has_been_transfered', '=', True),
+			    			       ('state', '!=', 'cancel')]}"/>
+		</button>
+		<field name="user_id" position="after">
+		    <field name="has_been_transfered" invisible="1"/>
+		    <field name="available_amount"/>
+		</field>
+            </field>
+        </record>
     </data>
 </odoo>

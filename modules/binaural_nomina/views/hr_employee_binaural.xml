@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="employee_ari_inherit_binaural_nomina" model="ir.ui.view">
+        <field name="name">binaural.employee.ari</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='work_permit']" position="after">
+                <group string="ISLR">
+                    <label for="porc_ari"/>
+                    <div>
+                        <field name="porc_ari" nolabel="1"/>
+                        <span>%</span>
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

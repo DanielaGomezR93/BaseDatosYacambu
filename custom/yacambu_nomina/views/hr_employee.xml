@@ -7,12 +7,7 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
 		<field name="department_id" position="after">
-		    <field name="headquarter_id"/>
-		</field>
-		<field name="work_email" position="after">
-		    <field name="entry_date"/>
-		    <field name="egress_date"/>
-		    <field name="seniority"/>
+		    <field name="headquarter_id" widget="selection"/>
 		</field>
             </field>
         </record>

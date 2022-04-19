@@ -5,24 +5,54 @@
 
         <!-- diario con codigo SS condicionado -->
         <function model="account.journal" name="load_master_data_journal">                                     
-        </function>
+        </function>        
+
+        <!-- categoria de regla salarial -->
+        <record id="hr_salary_rule_category_asignacion" model="hr.salary.rule.category">
+            <field name="name">Asignación</field>
+            <field name="code">ASIG</field>
+            <field name="note">Asignacion</field>
+        </record>
 
          <!-- tipo entrada de trabajo -->
         <!-- OJO: Se usa la referencia de ausencias  -->
         <record id="hr_work_entry_binaural_weekend" model="hr.work.entry.type">
             <field name="name">Fin de semana</field>
             <field name="code">FSAP01</field>
+            <field name="is_leave" eval="False" />                        
+            <field name="round_days">NO</field>            
+        </record>
+
+        <record id="hr_work_entry_binaural_extra_hours" model="hr.work.entry.type">
+            <field name="name">Horas extra trabajada</field>
+            <field name="code">HE01</field>
             <field name="is_leave" eval="True" />
             <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_cl')])]" />
-            <field name="round_days">HALF</field>
-            <field name="round_days_type">DOWN</field>
+            <field name="round_days">NO</field>            
+        </record>
+
+         <record id="hr_work_entry_binaural_extra_hours_night" model="hr.work.entry.type">
+            <field name="name">Horas extra trabajada (nocturna)</field>
+            <field name="code">HEN01</field>
+            <field name="is_leave" eval="True" />
+            <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_cl')])]" />
+            <field name="round_days">NO</field>            
         </record>
 
         <!-- OJO: Se usa la referencia de ausencias  -->
         <record id="hr_work_entry_binaural_holiday" model="hr.work.entry.type">
-            <field name="name">Feriado de ley</field>
+            <field name="name">Feriado de ley trabajado</field>
             <field name="code">FLAP02</field>
-            <field name="is_leave" eval="True" />            
+            <field name="is_leave" eval="True" />
+            <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_cl')])]" />
+            <field name="round_days">NO</field>            
+        </record>
+        
+        <record id="hr_work_entry_binaural_break_day" model="hr.work.entry.type">
+            <field name="name">Día de descanso trabajado</field>
+            <field name="code">DIADESC</field>
+            <field name="is_leave" eval="True" />
+            <field name="leave_type_ids" eval="[(6,0,[ref('hr_holidays.holiday_status_cl')])]" />            
             <field name="round_days">NO</field>            
         </record>
 
@@ -39,13 +69,13 @@
             <field name="work_entry_type_id" ref="hr_work_entry_binaural_holiday" />
         </record>       
 
-        <!-- tipo de trabajo diurno -->
+        <!-- tipo de trabajo diurno (cambiar a este recurso por defecto en la configuracion) -->
         <record id="hr_resource_calendar_diurno_40h" model="resource.calendar">
             <field name="name">40 Horas/Semana Diurna</field>
             <field name="company_id" ref="base.main_company"/>
             <field name="hours_per_day">8.0</field>
             <field name="tz">America/Caracas</field>
-            <field name="full_time_required_hours">40</field>
+            <field name="full_time_required_hours">56</field> <!-- preguntar esto a daniela -->
             <field name="attendance_ids"
                 eval="[(5, 0, 0),
                     (0, 0, {'name': 'Lunes mañana', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning','work_entry_type_id':ref('hr_work_entry.work_entry_type_attendance')}),
@@ -78,15 +108,14 @@
         </record>
 
         <!-- tipo de estructura quincenal 40 horas -->
-        <record id="structure_type_40h_biweekly" model="hr.payroll.structure.type">
+        <!-- <record id="structure_type_40h_biweekly" model="hr.payroll.structure.type">
             <field name="name">Nomina Quincenal / 40 horas por semana (Diurno)</field>
             <field name="country_id" search="[('name','=','Venezuela')]"/>
             <field name="wage_type">monthly</field>
             <field name="default_schedule_pay">bi-weekly</field>
             <field name="default_resource_calendar_id" ref="hr_resource_calendar_diurno_40h" />
-            <field name="default_work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance" />
-            <!-- <field name="default_struct_id" ref="structure_payroll_bi_weekly" /> este valor hay que asignarlo, buscar la forma -->
-        </record>
+            <field name="default_work_entry_type_id" ref="hr_work_entry.work_entry_type_attendance" />            
+        </record> -->
 
         <!-- estructura salarial Básica Mensual -->
         <record id="structure_payroll_monthly" model="hr.payroll.structure">
@@ -95,7 +124,11 @@
             <field name="use_worked_day_lines" eval="True" />
             <field name="country_id" search="[('name','=','Venezuela')]"/>
             <field name="report_id" search="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]" />
-            <field name="schedule_pay">monthly</field>
+            <field name="schedule_pay">monthly</field>  
+            <field name="rule_ids" eval="[(5, 0, 0),
+                (0,0,{'name': 'Salario basico','sequence': 1, 'code': 'BASIC', 'category_id': ref('hr_payroll.BASIC'), 'condition_select': 'none', 'amount_select': 'code','amount_python_compute': 'result = payslip.paid_amount'}),
+                (0,0,{'name': 'Salario neto','sequence': 200,'code': 'NET','category_id': ref('hr_payroll.NET'),'condition_select': 'none','amount_select': 'code', 'amount_python_compute': 'result = categories.BASIC + categories.ASIG + categories.DED'})
+                ]" />
         </record>
 
         <!-- estructura salarial Vacaciones Mensual -->
@@ -143,17 +176,21 @@
         </record>
 
          <!-- estructura salarial Básica Quincenal -->
-        <record id="structure_payroll_bi_weekly" model="hr.payroll.structure">
+        <!-- <record id="structure_payroll_bi_weekly" model="hr.payroll.structure">
             <field name="name">Nomina Básica Quincenal</field>
             <field name="type_id" ref="structure_type_40h_biweekly" />
             <field name="use_worked_day_lines" eval="True" />
             <field name="country_id" search="[('name','=','Venezuela')]"/>
             <field name="report_id" search="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]" />
             <field name="schedule_pay">bi-weekly</field>
-        </record>
+            <field name="rule_ids" eval="[(5, 0, 0),
+                (0,0,{'name': 'Salario basico','sequence': 1, 'code': 'BASIC', 'category_id': ref('hr_payroll.BASIC'), 'condition_select': 'none', 'amount_select': 'code','amount_python_compute': 'result = payslip.paid_amount'}),
+                (0,0,{'name': 'Salario neto','sequence': 200,'code': 'NET','category_id': ref('hr_payroll.NET'),'condition_select': 'none','amount_select': 'code', 'amount_python_compute': 'result = categories.BASIC + categories.ASIG + categories.DED'})
+                ]" />
+        </record> -->
 
         <!-- estructura salarial Vacaciones Quincenal -->
-        <record id="structure_payroll_vacation_bi_weekly" model="hr.payroll.structure">
+        <!-- <record id="structure_payroll_vacation_bi_weekly" model="hr.payroll.structure">
             <field name="name">Nomina Vacaciones Quincenal</field>
             <field name="type_id" ref="structure_type_40h_biweekly" />
             <field name="use_worked_day_lines" eval="True" />
@@ -161,10 +198,10 @@
             <field name="report_id" search="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]" />
             <field name="schedule_pay">bi-weekly</field>
             <field name="rule_ids" eval="[]" />
-        </record>
+        </record> -->
 
         <!-- estructura salarial Utilidades Quincenal -->
-        <record id="structure_payroll_13month_bi_weekly" model="hr.payroll.structure">
+        <!-- <record id="structure_payroll_13month_bi_weekly" model="hr.payroll.structure">
             <field name="name">Nomina Utilidades Quincenal</field>
             <field name="type_id" ref="structure_type_40h_biweekly" />
             <field name="use_worked_day_lines" eval="True" />
@@ -172,10 +209,10 @@
             <field name="report_id" search="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]" />
             <field name="schedule_pay">bi-weekly</field>
             <field name="rule_ids" eval="[]" />
-        </record>
+        </record> -->
 
         <!-- estructura salarial Prestaciones Quincenal -->
-        <record id="structure_payroll_prestaciones_bi_weekly" model="hr.payroll.structure">
+        <!-- <record id="structure_payroll_prestaciones_bi_weekly" model="hr.payroll.structure">
             <field name="name">Nomina Prestaciones Quincenal</field>
             <field name="type_id" ref="structure_type_40h_biweekly" />
             <field name="use_worked_day_lines" eval="True" />
@@ -183,10 +220,10 @@
             <field name="report_id" search="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]" />
             <field name="schedule_pay">bi-weekly</field>
             <field name="rule_ids" eval="[]" />
-        </record>
+        </record> -->
 
         <!-- estructura salarial Liquidaciones Quincenal -->
-        <record id="structure_payroll_liquidaciones_bi_weekly" model="hr.payroll.structure">
+        <!-- <record id="structure_payroll_liquidaciones_bi_weekly" model="hr.payroll.structure">
             <field name="name">Nomina Liquidaciones Quincenal</field>
             <field name="type_id" ref="structure_type_40h_biweekly" />
             <field name="use_worked_day_lines" eval="True" />
@@ -194,28 +231,32 @@
             <field name="report_id" search="[('model','=','hr.payslip'),('report_type','=','qweb-pdf')]" />
             <field name="schedule_pay">bi-weekly</field>
             <field name="rule_ids" eval="[]" />
-        </record>
+        </record> -->
        
         <record id="hr_employee1" model="hr.employee">
         <field name="name">Angelica Azuaje</field>
+        <field name="tz">America/Caracas</field>
       </record>
 
       <record id="hr_employee2" model="hr.employee">
         <field name="name">Daniela Gomez</field>
+        <field name="tz">America/Caracas</field>
       </record>
 
       <record id="hr_employee3" model="hr.employee">
         <field name="name">Miguel Gozaine</field>
+        <field name="tz">America/Caracas</field>
       </record>
 
       <record id="hr_employee4" model="hr.employee">
         <field name="name">Sahira Lacruz</field>
+        <field name="tz">America/Caracas</field>
       </record>
 
       <record id="hr_contract1" model="hr.contract">
         <field name="name">administracion</field>
         <field name="employee_id" ref="hr_employee1" />
-        <field name="structure_type_id" ref="structure_type_40h_biweekly" />
+        <field name="structure_type_id" ref="structure_type_40h_month" />
         <field name="date_start">2022-03-01</field>
         <field name="resource_calendar_id" ref="hr_resource_calendar_diurno_40h" />
         <field name="wage">800</field>
@@ -242,7 +283,7 @@
        <record id="hr_contract4" model="hr.contract">
         <field name="name">gente</field>
         <field name="employee_id" ref="hr_employee4" />
-        <field name="structure_type_id" ref="structure_type_40h_biweekly" />
+        <field name="structure_type_id" ref="structure_type_40h_month" />
         <field name="date_start">2022-02-01</field>
         <field name="resource_calendar_id" ref="hr_resource_calendar_diurno_40h" />
         <field name="wage">1800</field>

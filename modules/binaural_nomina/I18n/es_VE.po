@@ -58,3 +58,13 @@ msgid ""
 "Are you sure you want to switch this calendar to 2 weeks calendar ? All "
 "entries will be lost"
 msgstr "Estas seguro que quieres cambiar este calendario a 2 semanas? Todos los registros se perderán"
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/wizard/hr_payroll_payslips_by_employees.py:0
+#, python-format
+msgid ""
+"Some part of %s's calendar is not covered by any work entry. Please complete"
+" the schedule."
+msgstr ""
+"Alguna parte del calendario de %s no está cubierta por ninguna entrada de "
+"trabajo. Por favor, completa el horario."

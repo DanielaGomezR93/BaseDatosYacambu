@@ -9,5 +9,9 @@
 		  action="hr_nominal_position_action"
 		  parent="hr.menu_human_resources_configuration"
 		  sequence="12"/>
+	<menuitem id="menu_hr_allowance" name="Complementos Salariales"
+		  action="hr_allowance_action"
+		  parent="hr.menu_human_resources_configuration"
+		  sequence="13"/>
     </data>
 </odoo>

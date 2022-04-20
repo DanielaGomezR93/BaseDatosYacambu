@@ -10,11 +10,11 @@
     "depends": [
         "base",
         "binaural_contactos_configuraciones",
-        "hr",
-        "hr_payroll",
+        "binaural_nomina",
     ],
     "data": [
         "security/ir.model.access.csv",
+        "views/hr_allowance.xml",
         "views/hr_employee.xml",
         "views/hr_headquarter.xml",
         "views/hr_nominal_position.xml",

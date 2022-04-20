@@ -232,6 +232,7 @@ class APIController(http.Controller):
                     values['lang'] = "es_VE"
                     values['exempt_islr'] = True
                     values['exempt_iva'] = True
+                    values['customer_rank'] = 1
 
                     Response.status = "400"
                     if "street" not in values or values['street'] is False:

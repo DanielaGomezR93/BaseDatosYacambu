@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <!-- regla calculo IVSS estructura mensual-->
+        <record id="ivss_monthly_rule" model="hr.salary.rule">
+            <field name="name">Deducción PM - IVSS</field>
+            <field name="category_id" search="[('code','=','DED')]"/>
+            <field name="code">PM-IVSS</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">50</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+calculo = ((categories.BASIC*12/52)*(porc_ivss/100)) * payslip.env['hr.payslip']._compute_monday_in_range(payslip.id)
+if (calculo &lt;= (tope_ivss * salario_minimo_actual)):
+    result = -(calculo)
+else:
+    result = -(tope_ivss * salario_minimo_actual)
+            </field>
+        </record>
+
+        <!-- regla calculo FAOV estructura mensual -->
+        <record id="faov_monthly_rule" model="hr.salary.rule">
+            <field name="name">Deducción PM - FAOV</field>
+            <field name="category_id" search="[('code','=','DED')]"/>
+            <field name="code">PM-FAOV</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">60</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = -(categories.BASIC * (porc_faov/100))
+            </field>
+        </record>
+
+        <!-- regla calculo paro forzoso estructura mensual -->
+        <record id="pf_monthly_rule" model="hr.salary.rule">
+            <field name="name">Deducción PM - Paro Forzoso</field>
+            <field name="category_id" search="[('code','=','DED')]"/>
+            <field name="code">PM-PF</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">70</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+calculo = ((categories.BASIC*12/52)*(porc_pf/100)) * payslip.env['hr.payslip']._compute_monday_in_range(payslip.id)
+if (calculo &lt;= (tope_pf * salario_minimo_actual)):
+    result = -(calculo)
+else:
+    result = -(tope_pf * salario_minimo_actual)
+            </field>
+        </record>
+
+        <!-- regla calculo horas extra -->
+        <record id="extra_hours_rule" model="hr.salary.rule">
+            <field name="name">Pago de Horas Extras Diurnas Trabajadas  Mensual</field>
+            <field name="category_id" search="[('code','=','ASIG')]"/>
+            <field name="code">PHETM</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">10</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+#debe existir tipo de entrada HE01
+result = worked_days.HE01            
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = worked_days.HE01.number_of_hours * (50/100) * (contract.wage/30/employee.contract_id.resource_calendar_id.hours_per_day)
+            </field>
+        </record>
+
+        <!-- regla calculo horas extra nocturna -->
+        <record id="extra_hours_night_rule" model="hr.salary.rule">
+            <field name="name">Pago de Horas Extras Nocturna Trabajadas  Mensual</field>
+            <field name="category_id" search="[('code','=','ASIG')]"/>
+            <field name="code">PHENTM</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">11</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+#debe existir tipo de entrada HEN01
+result = worked_days.HEN01            
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = worked_days.HEN01.number_of_hours * (50/100) * (contract.wage/30/employee.contract_id.resource_calendar_id.hours_per_day)
+            </field>
+        </record>
+
+        <!-- regla calculo dias de descando (fines de semana) -->
+        <record id="break_day_rule" model="hr.salary.rule">
+            <field name="name">Pago por Días de Descanso Trabajados Mensual</field>
+            <field name="category_id" search="[('code','=','ASIG')]"/>
+            <field name="code">PDDTM</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">15</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+#debe existir tipo de entrada DIADESC
+result = worked_days.DIADESC            
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = worked_days.DIADESC.number_of_hours * (50/100) * (contract.wage/30/employee.contract_id.resource_calendar_id.hours_per_day)
+            </field>
+        </record>
+
+        <!-- regla calculo feriado -->
+        <record id="holiday_rule" model="hr.salary.rule">
+            <field name="name">Pago por feriado Trabajados Mensual</field>
+            <field name="category_id" search="[('code','=','ASIG')]"/>
+            <field name="code">PFTM</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">16</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+#debe existir tipo de entrada FLAP02
+result = worked_days.FLAP02            
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = worked_days.FLAP02.number_of_hours * (50/100) * (contract.wage/30/employee.contract_id.resource_calendar_id.hours_per_day)
+            </field>
+        </record>
+
+        <!-- regla ISLR -->
+        <record id="islr_rule" model="hr.salary.rule">
+            <field name="name">Deducción PM - ISLR</field>
+            <field name="category_id" search="[('code','=','DED')]"/>
+            <field name="code">PM-ISLR</field>
+            <field name="struct_id" ref="structure_payroll_monthly" />
+            <field name="appears_on_payslip" eval="True" />
+            <field name="sequence">80</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = -(categories.BASIC * (employee.porc_ari/100))
+            </field>
+        </record>
+    </data>
+        
+
+</odoo>

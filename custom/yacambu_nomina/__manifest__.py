@@ -15,6 +15,7 @@
     "data": [
         "security/ir.model.access.csv",
         "views/hr_allowance.xml",
+        "views/hr_contract.xml",
         "views/hr_employee.xml",
         "views/hr_headquarter.xml",
         "views/hr_nominal_position.xml",

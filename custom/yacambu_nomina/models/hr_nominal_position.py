@@ -7,6 +7,8 @@ class HrNominalPosition(models.Model):
 
     name = fields.Char(string="Descripción", required=True)
     active = fields.Boolean(default=True)
+    contract_ids = fields.One2many(
+        "hr.contract", "nominal_position_id", string="Contratos")
 
     _sql_constraints = [
         ("unique_name", "UNIQUE(name)",

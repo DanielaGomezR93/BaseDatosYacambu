@@ -13,5 +13,9 @@
 		  action="hr_allowance_action"
 		  parent="hr.menu_human_resources_configuration"
 		  sequence="13"/>
+	<menuitem id="menu_hr_salary_tab" name="Tabuladores Salariales"
+		  action="hr_salary_tab_action"
+		  parent="hr_work_entry_contract.menu_hr_payroll_configuration"
+		  sequence="13"/>
     </data>
 </odoo>

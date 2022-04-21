@@ -8,17 +8,18 @@ class HrSalaryTab(models.Model):
     _inherit = ["mail.thread"]
     _description = "Tabulador Salarial"
 
+    name = fields.Char(string="Nombre", related="nominal_position_id.name")
     active = fields.Boolean(default=True)
     date_from = fields.Date(
         string="Vigente desde", required=True, tracking=True)
     date_to = fields.Date(
         string="Hasta", required=True, tracking=True)
     nominal_position_id = fields.Many2one(
-        "hr.nominal.position", string="Cargo nominal", tracking=True)
+        "hr.nominal.position", string="Cargo nominal", required=True, tracking=True)
     wage_type = fields.Selection(
         selection=[("monthly", "Salario Fijo Mensual"), ("hourly", "Salario por Hora")],
         string="Tipo de salario", required=True, tracking=True)
-    wage = fields.Float(string="Salario Mensual", tracking=True)
+    wage = fields.Float(string="Salario Mensual", required=True, tracking=True)
     hourly_wage = fields.Float(string="Salario por Hora", tracking=True)
     food_allowance = fields.Float(string="Cestaticket", tracking=True)
     allowance = fields.Float(string="Complemento", tracking=True)

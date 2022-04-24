@@ -15,7 +15,9 @@
 		  sequence="13"/>
 	<menuitem id="menu_hr_salary_tab" name="Tabuladores Salariales"
 		  action="hr_salary_tab_action"
-		  parent="hr_work_entry_contract.menu_hr_payroll_configuration"
-		  sequence="13"/>
+		  parent="hr_work_entry_contract.menu_hr_payroll_configuration"/>
+	<menuitem id="menu_hr_employee_salary_change" name="Variaciones Salariales"
+		  action="hr_employee_salary_change_action"
+		  parent="hr_payroll.menu_hr_payroll_report"/>
     </data>
 </odoo>

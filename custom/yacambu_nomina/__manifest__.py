@@ -17,6 +17,7 @@
         "views/hr_allowance.xml",
         "views/hr_contract.xml",
         "views/hr_employee.xml",
+        "views/hr_employee_salary_change.xml",
         "views/hr_headquarter.xml",
         "views/hr_nominal_position.xml",
         "views/hr_salary_tab.xml",

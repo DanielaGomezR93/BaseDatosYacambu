@@ -25,6 +25,7 @@ class CrossoveredBudget(models.Model):
             "view_mode": "form",
             "context": {
                 "default_origin_budget_id": self.id,
+                "default_user_id": self.env.uid,
             }
         }
 

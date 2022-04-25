@@ -7,6 +7,8 @@ class CrossoveredBudgetTransfer(models.Model):
 
     name = fields.Char(string="Nro control")
     date = fields.Date(string="Fecha de solicitud", readonly=True)
+    user_id = fields.Many2one(
+        "res.users", string="Usuario", help="Quien realizó la transferencia.", readonly=True)
     general_budget_id = fields.Many2one("account.budget.post", string="Situación Presupuestaria", readonly=True)
     currency_id = fields.Many2one("res.currency", related="cancelled_budget_id.currency_id")
     cancelled_budget_id = fields.Many2one("crossovered.budget", string="Unidad Origen (Cancelada)", readonly=True)

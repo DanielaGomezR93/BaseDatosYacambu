@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="earnings_by_program" model="ir.filters">
+	    <field name="name">Reporte de Ingresos por programa</field>
+	    <field name="model_id">account.analytic.line</field>
+	    <field name="user_id" eval="False"/>
+	    <field name="is_default">True</field>
+	    <field name="domain">[["modality_id", "!=", False]]</field>
+	    <field name="context">{"group_by": ["modality_id", "general_account_id", "account_id"]}</field>
+	</record>
+    </data>
+</odoo>

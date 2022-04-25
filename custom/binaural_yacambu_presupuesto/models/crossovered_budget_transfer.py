@@ -7,6 +7,9 @@ class CrossoveredBudgetTransfer(models.Model):
 
     name = fields.Char(string="Nro control")
     date = fields.Date(string="Fecha de solicitud", readonly=True)
+    user_id = fields.Many2one(
+        "res.users", string="Usuario", help="Quien realizó la transferencia.", readonly=True)
+    general_budget_id = fields.Many2one("account.budget.post", string="Situación Presupuestaria", readonly=True)
     currency_id = fields.Many2one("res.currency", related="cancelled_budget_id.currency_id")
     cancelled_budget_id = fields.Many2one("crossovered.budget", string="Unidad Origen (Cancelada)", readonly=True)
     new_origin_budget_id = fields.Many2one(
@@ -14,6 +17,6 @@ class CrossoveredBudgetTransfer(models.Model):
     destination_budget_id = fields.Many2one("crossovered.budget", string="Unidad Destino", readonly=True)
     destination_budget_new_line_id = fields.Many2one("crossovered.budget.lines", string="Linea de presupuesto")
     origin_available_amount = fields.Monetary(string="Monto disponible de la Unidad Origen", readonly=True)
-    amount_to_be_transfered = fields.Monetary(string="Monto a transferir", reaonly=True)
+    amount_to_be_transfered = fields.Monetary(string="Monto a transferir", readonly=True)
     destination_available_amount = fields.Monetary(string="Monto disponible de la Unidad Destino", readonly=True)
     updated_amount = fields.Monetary(string="Monto Actualizado", readonly=True)

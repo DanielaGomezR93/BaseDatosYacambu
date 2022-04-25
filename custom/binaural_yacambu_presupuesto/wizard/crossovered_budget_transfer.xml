@@ -17,6 +17,7 @@
 			</group>
 			<group>
 		    	    <field name="destination_budget_id"/>
+			    <field name="general_budget_id"/>
 		    	    <field name="amount_to_be_transfered"/>
 		    	    <field name="destination_available_amount"/>
 			</group>
@@ -26,9 +27,26 @@
 			    <field name="updated_amount"/>
 			</group>
 		    </group>
+		    <notebook>
+			<page string="Líneas del presupuesto de origen">
+			    <field name="origin_budget_line_ids">
+				<tree string="Líneas del presupuesto de origen" edit="false" create="false" delete="false">
+				    <field name="general_budget_id"/>
+				    <field name="analytic_account_id"/>
+				    <field name="date_from"/>
+				    <field name="date_to"/>
+				    <field name="date_to"/>
+				    <field name="currency_id" invisible="1"/>
+				    <field name="planned_amount"/>
+				    <field name="practical_amount"/>
+				    <field name="available_amount"/>
+				</tree>
+			    </field>
+			</page>
+		    </notebook>
 		</sheet>
 		<footer>
-		    <button name="action_transfer_amount" string="Crear"
+		    <button name="action_transfer_amount" string="Aceptar"
 			    type="object" class="oe_highlight"/>
                	    <button string="Cancelar" class="btn btn-default" special="cancel"/>
 		</footer>

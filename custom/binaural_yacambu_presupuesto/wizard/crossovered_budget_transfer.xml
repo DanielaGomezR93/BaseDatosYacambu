@@ -46,7 +46,7 @@
 		    </notebook>
 		</sheet>
 		<footer>
-		    <button name="action_transfer_amount" string="Crear"
+		    <button name="action_transfer_amount" string="Aceptar"
 			    type="object" class="oe_highlight"/>
                	    <button string="Cancelar" class="btn btn-default" special="cancel"/>
 		</footer>

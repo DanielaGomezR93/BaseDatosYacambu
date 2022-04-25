@@ -36,6 +36,10 @@
 			    			('general_account_id.name', '=ilike', self+'%')]"/>
 		    <filter name="modality_id" string="Tiene Modalidad" domain="[('modality_id','!=',False)]"/>
 	        </field>
+		<filter name="account_id" position="before">
+		    <filter string="Modalidad" name="modality_id"
+			    context="{'group_by': 'modality_id'}"/>
+		</filter>
             </field>
         </record>
 

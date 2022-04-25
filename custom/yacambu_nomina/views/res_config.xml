@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="res_config_settings_inherit_yacambu_nomina" model="ir.ui.view">
+	    <field name="name">Configuracion Nomina Yacambu</field>
+	    <field name="model">res.config.settings</field>
+	    <field name="priority" eval="45"/>
+	    <field name="inherit_id" ref="binaural_nomina.res_config_settings_inherit_binaural_nomina"/>
+	    <field name="arch" type="xml">
+		<xpath expr="//div[@id='l10n_ve_hr_payroll']" position="inside">
+                    <div class="col-lg-8 col-12 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <div class="text-muted">
+                                Porcentaje de calculo de Bono Nocturno
+                            </div>
+                            <group class="mt16" name="default_deductions_1">
+                                <label for="night_voucher_percentage"/>
+                                <div>
+                                    <field name="night_voucher_percentage" nolabel="1"/>
+                                    <span>%</span>
+                                </div>                                                                    
+                            </group>
+                        </div>
+		    </div>
+		</xpath>
+	    </field>
+	</record>
+    </data>
+</odoo>

@@ -21,6 +21,7 @@
         "views/hr_headquarter.xml",
         "views/hr_nominal_position.xml",
         "views/hr_salary_tab.xml",
+        "views/res_config.xml",
         "views/menuitems.xml",
     ],
     "images": ["static/description/icon.png"],

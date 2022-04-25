@@ -12,6 +12,7 @@
         "yacambu_account",
     ],
     "data": [
+        "data/account_analytic.xml",
         "views/account_analytic.xml",
         "views/account_budget.xml",
         "views/crossovered_budget_transfer.xml",

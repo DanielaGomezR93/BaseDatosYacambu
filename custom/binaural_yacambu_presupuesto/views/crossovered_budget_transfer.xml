@@ -62,7 +62,7 @@
 		    		<field name="amount_to_be_transfered"/>
 		    		<field name="destination_available_amount"/>
 		    		<field name="updated_amount"/>
-			    	<field name="destination_budget_new_line_id"/>
+			    	<field name="destination_budget_new_line_ids"/>
 			    </group>
 			</group>
 		    </sheet>

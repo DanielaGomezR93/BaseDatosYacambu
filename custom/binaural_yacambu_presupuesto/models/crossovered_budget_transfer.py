@@ -15,7 +15,7 @@ class CrossoveredBudgetTransfer(models.Model):
     new_origin_budget_id = fields.Many2one(
         "crossovered.budget", string="Unidad Origen (Generada en la transferencia)", readonly=True)
     destination_budget_id = fields.Many2one("crossovered.budget", string="Unidad Destino", readonly=True)
-    destination_budget_new_line_id = fields.Many2one("crossovered.budget.lines", string="Linea de presupuesto")
+    destination_budget_new_line_ids = fields.Many2many("crossovered.budget.lines", string="Linea de presupuesto")
     origin_available_amount = fields.Monetary(string="Monto disponible de la Unidad Origen", readonly=True)
     amount_to_be_transfered = fields.Monetary(string="Monto a transferir", readonly=True)
     destination_available_amount = fields.Monetary(string="Monto disponible de la Unidad Destino", readonly=True)

@@ -13,6 +13,7 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
         "crossovered.budget", string="Unidad Origen", domain="[('state', 'in', ('confirm', 'validate'))]", required=True)
     origin_budget_line_ids = fields.Many2many(
         "crossovered.budget.lines", compute="_compute_origin_line_ids", string="Líneas del Presupuesto de origen")
+    transfer_line_ids = fields.Many2many("crossovered.budget.transfer.line", string="Lineas de Transferencia")
     destination_budget_id = fields.Many2one(
         "crossovered.budget", string="Unidad Destino", required=True,
         domain="[('id', '!=', origin_budget_id), ('state', 'not in', ('cancel', 'done'))]")
@@ -68,6 +69,7 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
             "date_from": self.origin_budget_id.date_from,
             "date_to": self.origin_budget_id.date_to,
         }) 
+        new_lines = []
 
         is_transfered = False
         new_budget_lines = []
@@ -99,7 +101,7 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
         new_line_date_from = self.date
         if self.date < self.destination_budget_id.date_from or self.date > self.destination_budget_id.date_to:
             new_line_date_from = self.destination_budget_id.date_from
-        new_line = self.env["crossovered.budget.lines"].create({
+        new_lines += self.env["crossovered.budget.lines"].create({
             "crossovered_budget_id": self.destination_budget_id.id,
             "general_budget_id": self.general_budget_id.id,
             "date_from": new_line_date_from,
@@ -114,10 +116,17 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
             "cancelled_budget_id": self.origin_budget_id.id,
             "destination_budget_id": self.destination_budget_id.id,
             "new_origin_budget_id": new_origin.id,
-            "destination_budget_new_line_id": new_line.id,
+            "destination_budget_new_line_ids": new_lines.mapped("id"),
             "general_budget_id": self.general_budget_id.id,
             "origin_available_amount": self.origin_available_amount,
             "amount_to_be_transfered": self.amount_to_be_transfered,
             "destination_available_amount": self.destination_available_amount,
             "updated_amount": self.updated_amount,
         })
+
+
+class CrossoveredBudgetTransferLine(models.TransientModel):
+    _name = "crossovered.budget.transfer.line"
+
+    crossovered_budget_lines_id = fields.Many2one("crossovered.budget.lines", string="Lineas de presupuesto")
+    general_budget_id = fields.Many2one("account.budget.post", string="Posición presupuestaria")

@@ -263,8 +263,6 @@ class EconomicActivity(models.Model):
     _rec_name = 'name'
     _sql_constraints = [('code_uniq', 'unique (name,municipality_id)',
                          'No puede existir dos registros con el mismo codigo para el municipio seleccionado'),
-                        ('brach_uniq', 'unique (branch_id,municipality_id)',
-                         'No puede existir dos registros con el mismo municipio y ramo económico'),
                         ('aliquot_mayor_cero', 'check (aliquot > 0)', 'La aliquota debe ser mayor a cero')]
 
     name = fields.Char('Código', required=True)

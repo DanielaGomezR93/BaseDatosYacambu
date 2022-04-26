@@ -15,6 +15,57 @@
                     </div>
                 </group>
             </xpath>
+
+	    <field name="work_email" position="after">
+		<field name="entry_date"/>
+		<field name="egress_date"/>
+		<field name="seniority"/>
+	    </field>
+
+	    <xpath expr="//page[@name='personal_information']/group/group[4]" position="attributes">
+		<attribute name="invisible">1</attribute>
+	    </xpath>
+	    <xpath expr="//page[@name='personal_information']/group/group[8]" position="attributes">
+		<attribute name="invisible">1</attribute>
+	    </xpath>
+
+	    <notebook position="inside">
+	    	<page name="dependants" string="Dependientes" groups="hr.group_hr_user">
+		    <field name="dependant_ids">
+			<tree name="dependant_ids_tree" editable="bottom">
+			    <field name="name"/>
+			    <field name="birth_date"/>
+			    <field name="code"/>
+			    <field name="school_degree"/>
+			    <field name="grade"/>
+			    <field name="school"/>
+			    <field name="school_address"/>
+			</tree>
+		    </field>
+		</page>
+
+		<page name="education" string="Estudios realizados" groups="hr.group_hr_user">
+		    <field name="degree_ids">
+			<tree name="degree_ids_tree" editable="bottom">
+			    <field name="name"/>
+			    <field name="school"/>
+			    <field name="date_end"/>
+			    <field name="degree"/>
+			</tree>
+		    </field>
+		</page>
+
+		<page name="banks_information" string="Información Bancaria" groups="hr.group_hr_user">
+		    <field name="bank_ids">
+			<tree name="bank_ids_tree" editable="bottom">
+			    <field name="bank_name"/>
+			    <field name="account_type" string="Tipo de cuenta"/>
+			    <field name="name"/>
+			    <field name="details"/>
+			</tree>
+		    </field>
+		</page>
+	     </notebook>
         </field>
     </record>
 

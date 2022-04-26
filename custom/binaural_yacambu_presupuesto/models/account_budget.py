@@ -125,5 +125,4 @@ class CrossoveredBudgetLines(models.Model):
     @api.depends("variation")
     def _compute_available_amount(self):
         for budget_line in self:
-            available_amount = budget_line.planned_amount - budget_line.practical_amount
-            budget_line.available_amount = available_amount if available_amount > 0 else 0
+            budget_line.available_amount = budget_line.planned_amount - budget_line.practical_amount

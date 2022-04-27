@@ -36,10 +36,10 @@ class MunicipalityRetentions(models.Model):
                 if self.search([('name', '=', self.name), ('id', '!=', self.id)]):
                     raise ValidationError(
                         'Ya existe un comprobante con el número %s' % self.name)
-        if record.type == 'out_invoice':
-            if not self.name:
-                raise ValidationError(
-                    'El número de comprobante no puede estar vacío')
+            if record.type == 'out_invoice':
+                if not self.name:
+                    raise ValidationError(
+                        'El número de comprobante no puede estar vacío')
 
     def get_sequence_municipality_retention(self):
         sequence = self.env['ir.sequence'].search(

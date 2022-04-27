@@ -18,13 +18,14 @@ class CrossoveredBudget(models.Model):
     def action_transfer_wizard(self):
         return {
             "type": "ir.actions.act_window",
-            "name": "Transferencia entre presupuestos",
+            "name": "Transferencia de presupuesto",
             "res_model": "crossovered.budget.transfer.wizard",
             "target": "new",
             "view_id": self.env.ref("binaural_yacambu_presupuesto.view_crossovered_budget_transfer_wizard").id,
             "view_mode": "form",
             "context": {
                 "default_origin_budget_id": self.id,
+                "default_user_id": self.env.uid,
             }
         }
 
@@ -109,7 +110,10 @@ class CrossoveredBudgetLines(models.Model):
     @api.depends("planned_amount", "practical_amount")
     def _compute_variation(self):
         for budget_line in self:
-            budget_line.variation = budget_line.planned_amount - budget_line.practical_amount
+            if budget_line.practical_amount == 0:
+                budget_line.variation = 0
+            else:
+                budget_line.variation = abs(budget_line.planned_amount - budget_line.practical_amount)
 
     @api.depends("variation", "planned_amount")
     def _compute_variation_percentage(self):
@@ -121,6 +125,5 @@ class CrossoveredBudgetLines(models.Model):
     @api.depends("variation")
     def _compute_available_amount(self):
         for budget_line in self:
-            budget_line.available_amount = 0
-            if budget_line.variation > 0:
-                budget_line.available_amount = budget_line.variation
+            available_amount = budget_line.planned_amount - budget_line.practical_amount
+            budget_line.available_amount = available_amount if available_amount > 0 else 0

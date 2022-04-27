@@ -7,7 +7,7 @@
         """,
 
     'description': """
-        Modulo que agregar las personalizaciones de ley para Venezuela, incluye FAOV, INCE, IVSS, Paro Forzoso
+        Modulo que agrega las personalizaciones de ley para Venezuela, incluye FAOV, INCE, IVSS, Paro Forzoso
     """,
 
     'author': "Binaural C.A.",

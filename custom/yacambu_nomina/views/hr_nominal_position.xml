@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="hr_nominal_position_view_tree" model="ir.ui.view">
+	    <field name="name">hr.nominal.position.view.tree</field>
+	    <field name="model">hr.nominal.position</field>
+	    <field name="arch" type="xml">
+		<tree editable="bottom" delete="false">
+		    <field name="active" invisible="1"/>
+		    <field name="name" nolabel="1" placeholder="Descripción"/>
+		</tree>
+	    </field>
+	</record>
+
+	<record id="hr_nominal_position_view_kanban" model="ir.ui.view">
+            <field name="name">hr.nominal.position.kanban</field>
+            <field name="model">hr.nominal.position</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div>
+                                    <strong><field name="name"/></strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+	<record id="hr_nominal_position_action" model="ir.actions.act_window">
+	    <field name="name">Cargos Nominales</field>
+	    <field name="res_model">hr.nominal.position</field>
+	    <field name="view_mode">tree,kanban</field>
+	</record>
+    </data>
+</odoo>

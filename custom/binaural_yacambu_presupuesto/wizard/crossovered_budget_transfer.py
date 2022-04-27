@@ -13,7 +13,9 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
         "crossovered.budget", string="Unidad Origen", domain="[('state', 'in', ('confirm', 'validate'))]", required=True)
     origin_budget_line_ids = fields.Many2many(
         "crossovered.budget.lines", compute="_compute_origin_line_ids", string="Líneas del Presupuesto de origen")
-    transfer_line_ids = fields.Many2many("crossovered.budget.transfer.line", string="Lineas de Transferencia")
+    transfer_line_ids = fields.Many2many(
+        "crossovered.budget.transfer.line", relation="budget_transfer_wizard_budget_line_rel",
+        compute="_compute_transfer_line_ids", string="Lineas de Transferencia", readonly=False)
     destination_budget_id = fields.Many2one(
         "crossovered.budget", string="Unidad Destino", required=True,
         domain="[('id', '!=', origin_budget_id), ('state', 'not in', ('cancel', 'done'))]")
@@ -22,7 +24,7 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
     origin_available_amount = fields.Monetary(
         string="Monto disponible de la Unidad Origen",
         related="origin_budget_id.available_amount")
-    amount_to_be_transfered = fields.Monetary(string="Monto a transferir", required=True)
+    amount_to_be_transfered = fields.Monetary(string="Monto a transferir", compute="_compute_amount_to_be_transfered")
     destination_available_amount = fields.Monetary(
         string="Monto disponible de la Unidad Destino",
         related="destination_budget_id.available_amount")
@@ -35,6 +37,24 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
             for line in transfer.origin_budget_id.crossovered_budget_line:
                 transfer.origin_budget_line_ids += line
 
+    @api.depends("origin_budget_line_ids")
+    def _compute_transfer_line_ids(self):
+        for transfer in self:
+            lines = []
+            for line in transfer.origin_budget_line_ids:
+                lines += self.env["crossovered.budget.transfer.line"].create({
+                    "crossovered_budget_lines_id": line.id
+                })
+            transfer.transfer_line_ids = [budget_line.id for budget_line in lines]
+
+    @api.depends("transfer_line_ids")
+    def _compute_amount_to_be_transfered(self):
+        for transfer in self:
+            if any(transfer.transfer_line_ids):
+                transfer.amount_to_be_transfered = sum(transfer.transfer_line_ids.mapped("amount_to_be_transfered"))
+            else:
+                transfer.amount_to_be_transfered = 0
+
     @api.depends("amount_to_be_transfered", "destination_available_amount")
     def _compute_updated_amount(self):
         for transfer in self:
@@ -46,14 +66,11 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
             raise ValidationError(
                 "Este presupuesto no tiene disponibilidad.")
 
-    @api.constrains("amount_to_be_transfered")
+    @api.constrains("transfer_line_ids")
     def check_amount_to_be_transfered(self):
-        if self.amount_to_be_transfered > self.origin_available_amount:
-            raise ValidationError(
-                "La unidad de origen no tiene disponible la cantidad a transferir.")
         is_sufficient = False
-        for line in self.origin_budget_line_ids:
-            if line.available_amount >= self.amount_to_be_transfered:
+        for line in self.transfer_line_ids:
+            if line.available_amount >= line.amount_to_be_transfered:
                 is_sufficient = True
                 break
         if not is_sufficient:
@@ -128,5 +145,21 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
 class CrossoveredBudgetTransferLine(models.TransientModel):
     _name = "crossovered.budget.transfer.line"
 
-    crossovered_budget_lines_id = fields.Many2one("crossovered.budget.lines", string="Lineas de presupuesto")
-    general_budget_id = fields.Many2one("account.budget.post", string="Posición presupuestaria")
+    crossovered_budget_lines_id = fields.Many2one(
+        "crossovered.budget.lines", relation="budget_transfer_lines_wizard_rel",
+        string="Lineas de presupuesto")
+    currency_id = fields.Many2one(
+        "res.currency", related="crossovered_budget_lines_id.currency_id")
+    general_budget_id = fields.Many2one(
+        "account.budget.post", string="Posición presupuestaria",
+        related="crossovered_budget_lines_id.general_budget_id")
+    analytic_account_id = fields.Many2one(
+        "account.analytic.account", string="Cuenta analítica",
+        related="crossovered_budget_lines_id.analytic_account_id")
+    planned_amount = fields.Monetary(
+        string="Importe previsto", related="crossovered_budget_lines_id.planned_amount")
+    practical_amount = fields.Monetary(
+        string="Importe real", related="crossovered_budget_lines_id.practical_amount")
+    available_amount = fields.Monetary(
+        string="Disponible", related="crossovered_budget_lines_id.available_amount")
+    amount_to_be_transfered = fields.Monetary(string="Cantidad a Transferir")

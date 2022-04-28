@@ -7,6 +7,7 @@
 	    <field name="arch" type="xml">
 		<search string="Complementos Salariales">
 		    <field name="name" string="Complemento Salarial"/>
+		    <field name="code" string="Código"/>
 		    <separator/>
 		    <filter string="Archivado" name="inactive" domain="[('active', '=', False)]"/>
 		</search>
@@ -20,6 +21,7 @@
 		<tree editable="bottom" delete="false">
 		    <field name="active" invisible="1"/>
 		    <field name="name"/>
+		    <field name="code"/>
 		    <field name="value"/>
 		    <field name="description"/>
 		</tree>
@@ -36,6 +38,9 @@
                             <div class="oe_kanban_global_click">
                                 <div>
                                     <strong><field name="name"/></strong>
+                                </div>
+                                <div>
+                                    <strong><field name="code"/></strong>
                                 </div>
                                 <div>
                                     <span><field name="description"/></span>
@@ -63,6 +68,7 @@
 			<group>
 			    <field name="active" invisible="1"/>
 			    <group>
+			    	<field name="code"/>
 			    	<field name="value"/>
 			    </group>
 			    <group>

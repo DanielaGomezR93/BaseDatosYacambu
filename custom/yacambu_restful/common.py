@@ -60,23 +60,11 @@ def extract_arguments(payloads, offset=0, limit=0, order=None):
     return filters
 
 def non_numeric_id_response(id):
-    """
-    Returns a 400 response with an error intended to be
-    showed when an id is a non-numerical value.
-    """
-    Response.status = "400"
     return {
-        "msg": "invalid object id.",
-        "error": f"Literal '{id}' must be entirely numerical."
+        "error": f"El valor '{id}' debe ser enteramente numérico."
     }
 
 def invalid_object_model(model):
-    """
-    Returns a 404 response with an error intented to be
-    showed when a model does not exist on the records.
-    """
-    Response.status = "404"
     return {
-        "msg": "invalid object model",
-        "error": f"The model {model} is not available in the registry.",
+        "error": f"El modelo {model} no existe.",
     }

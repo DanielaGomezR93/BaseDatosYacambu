@@ -9,6 +9,18 @@
 		<field name="department_id" position="after">
 		    <field name="headquarter_id" widget="selection"/>
 		</field>
+		<notebook position="inside">
+		    <page name="allowances" string="Complementos Salariales">
+			<field name="allowance_line_ids">
+			    <tree string="Complementos Salariales" editable="bottom">
+				<field name="allowance_id"/>
+				<field name="code"/>
+				<field name="value"/>
+				<field name="description"/>
+			    </tree>
+			</field>
+		    </page>
+		</notebook>
             </field>
         </record>
     </data>

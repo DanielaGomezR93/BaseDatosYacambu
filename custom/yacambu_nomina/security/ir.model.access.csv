@@ -2,5 +2,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_headquarter,access_hr_headquarter,model_hr_headquarter,,1,1,1,0
 access_hr_nominal_position,access_hr_nominal_position,model_hr_nominal_position,,1,1,1,0
 access_hr_allowance,access_hr_allowance,model_hr_allowance,,1,1,1,0
+access_hr_allowance_line,access_hr_allowance_line,model_hr_allowance_line,,1,1,1,1
 access_hr_salary_tab,access_hr_salary_tab,model_hr_salary_tab,,1,1,1,0
 access_hr_employee_salary_change,access_hr_employee_salary_change,model_hr_employee_salary_change,,1,0,0,0

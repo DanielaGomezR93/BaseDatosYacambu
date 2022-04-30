@@ -12,19 +12,19 @@ class AccountPaymentYacambuRestful(models.Model):
 
     _inherit = "account.payment"
 
-    def paymnt_invoices(self, partner_id, invoice_id, move_id):
+    def payment_invoices(self, partner_id, invoice_id, move_id):
         lines_moves = []
         try:
             pay_term_lines = self.env['account.account'].sudo().search(
                 [('user_type_id.type', 'in', ('receivable', 'payable'))]).ids
 
             move_domain = [
-                # ("account_id", "in", pay_term_lines),
-                # ('move_id.state', '=', 'posted'),
+                ("account_id", "in", pay_term_lines),
+                ('move_id.state', '=', 'posted'),
                 ('move_id', '=', int(move_id)),
-                # ('partner_id', '=', int(partner_id)),
-                # ('reconciled', '=', False),
-                # '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
+                ('partner_id', '=', int(partner_id)),
+                ('reconciled', '=', False),
+                '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
             ]
             # domain.append(('balance', '<', 0.0))
             for line in self.env['account.move.line'].search(move_domain):
@@ -54,20 +54,20 @@ class AccountPaymentYacambuRestful(models.Model):
             _logger.info(f"Factura: {lines_invoice}")
             _logger.info('holssssis %s', lines_invoice)
 
-            for _ in lines_invoice:
+            for line in lines_invoice:
                 _logger.info('este es el monto de la factura: %s',
-                             lines_invoice[0].get('amount_residual_currency'))
+                             line.get('amount_residual_currency'))
 
                 try:
-                    if lines_invoice[0].get('amount_residual_currency') > 0.0:
+                    if line.get('amount_residual_currency') > 0.0:
                         bal = line_account.amount_residual_currency if abs(line_account.amount_residual_currency) <= abs(
-                            lines_invoice[0].get('amount_residual_currency')) else abs(lines_invoice[0].get('amount_residual_currency'))
+                            line.get('amount_residual_currency')) else abs(line.get('amount_residual_currency'))
                         _logger.info("balance a mandar en el partial %s", bal)
                         partials_vals_list = {
                             'amount': abs(bal),
                             'debit_amount_currency': abs(bal),
                             'credit_amount_currency': abs(bal),
-                            'debit_move_id': lines_invoice[0].get('id'),
+                            'debit_move_id': line.get('id'),
                             'credit_move_id': l,
                         }
                         _logger.info("partial %s", partials_vals_list)

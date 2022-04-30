@@ -16,7 +16,6 @@ expires_in = "yacambu_restful.access_token_expires_in"
 
 
 class AccessToken(http.Controller):
-    """."""
 
     def __init__(self):
 
@@ -44,40 +43,23 @@ class AccessToken(http.Controller):
             if not _credentials_includes_in_headers:
                 # Empty 'db' or 'username' or 'password:
                 return invalid_response(
-                    "missing error", "either of the following are missing [db, username,password]", 403,
-                )
+                    "Missing Error", "Falta alguno de los siguientes parámetros [db, username,password]", 403)
         # Login in odoo database:
         try:
             request.session.authenticate(db, username, password)
         except AccessError as e:
-            Response.status = "401"
-            return {
-                "msg": "Access Error",
-                "error": e
-            }
+            return invalid_response("Access Error", e, 403)
         except AccessDenied:
-            Response.status = "401"
-            return {
-                "msg": "Access Denied",
-                "error": "Login, password, or db invalid."
-            }
+            return invalid_response("Access Denied", "Usuario o contraseña inválidos.", 403)
         except Exception as e:
-            Response.status = "401"
-            info = "The database name is not valid {}".format((e))
-            error = "invalid_database"
-            _logger.error(info)
-            return {
-                "msg": "Wrong database name.",
-                "error": error
-            }
+            return invalid_response("Fatal Error", e, 400)
 
         uid = request.session.uid
         # odoo login failed:
         if not uid:
             info = "Authentication Failed"
             _logger.error(info)
-            Response.state = "401"
-            return { "msg": info }
+            return invalid_response("Access Error", info, 401)
 
         # Generate tokens
         access_token = _token.find_one_or_create_token(user_id=uid, create=True)
@@ -102,17 +84,16 @@ class AccessToken(http.Controller):
 
     @http.route("/api/auth/token", methods=["DELETE"], type="http", auth="none", csrf=False)
     def delete(self, **post):
-        """."""
         _token = request.env["api.access_token"]
         access_token = request.httprequest.headers.get("access_token")
+        if not access_token:
+            error = "Falta el token de acceso en el header de la petición"
+            return invalid_response("Missing Token", error, 401)
         access_token = _token.search([("token", "=", access_token)])
         if not access_token:
-            Response.state = "400"
-            info = "No access token was provided in request!"
-            error = "Access token is missing in the request header"
-            _logger.error(info)
-            return { "msg": info, "error": error }
+            error = "Token Invalido"
+            return invalid_response("Missing Token", error, 401)
         for token in access_token:
             token.unlink()
         # Successful response:
-        return valid_response([{"desc": "access token successfully deleted", "delete": True}])
+        return valid_response([{"Registro Eliminado": "El token de Acceso fue borrado satisfactoriamente",}])

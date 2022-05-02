@@ -14,7 +14,7 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
     origin_budget_line_ids = fields.Many2many(
         "crossovered.budget.lines", compute="_compute_origin_line_ids", string="Líneas del Presupuesto de origen")
     transfer_line_ids = fields.Many2many(
-        "crossovered.budget.transfer.line", relation="budget_transfer_wizard_budget_line_rel",
+        "crossovered.budget.transfer.line.wizard", relation="budget_transfer_wizard_budget_line_rel",
         compute="_compute_transfer_line_ids", string="Lineas de Transferencia", readonly=False)
     destination_budget_id = fields.Many2one(
         "crossovered.budget", string="Unidad Destino", required=True,
@@ -42,7 +42,7 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
         for transfer in self:
             lines = []
             for line in transfer.origin_budget_line_ids:
-                lines += self.env["crossovered.budget.transfer.line"].create({
+                lines += self.env["crossovered.budget.transfer.line.wizard"].create({
                     "crossovered_budget_lines_id": line.id
                 })
             transfer.transfer_line_ids = [budget_line.id for budget_line in lines]
@@ -143,7 +143,7 @@ class CrossoveredBudgetTransferWizard(models.TransientModel):
 
 
 class CrossoveredBudgetTransferLine(models.TransientModel):
-    _name = "crossovered.budget.transfer.line"
+    _name = "crossovered.budget.transfer.line.wizard"
 
     crossovered_budget_lines_id = fields.Many2one(
         "crossovered.budget.lines", relation="budget_transfer_lines_wizard_rel",

@@ -62,9 +62,19 @@
 		    		<field name="amount_to_be_transfered"/>
 		    		<field name="destination_available_amount"/>
 		    		<field name="updated_amount"/>
-			    	<field name="destination_budget_new_line_ids"/>
 			    </group>
 			</group>
+			<notebook>
+			    <page name="transfer_lines" string="Líneas de transferencia">
+				<field name="line_ids">
+				    <tree string="Líneas de transferencia">
+					<field name="origin_analytic_account_id"/>
+					<field name="destination_analytic_account_id"/>
+					<field name="transfered_amount"/>
+				    </tree>
+				</field>
+			    </page>
+			</notebook>
 		    </sheet>
 		</form>
 	    </field>

@@ -9,8 +9,6 @@ class CrossoveredBudgetTransfer(models.Model):
     date = fields.Date(string="Fecha de solicitud", readonly=True)
     user_id = fields.Many2one(
         "res.users", string="Usuario", help="Quien realizó la transferencia.", readonly=True)
-    general_budget_id = fields.Many2one(
-        "account.budget.post", string="Situación Presupuestaria", readonly=True)
     line_ids = fields.One2many(
         "crossovered.budget.transfer.line", "transfer_id",
         string="Líneas de transferencia de presupuesto", readonly=True, required=True)
@@ -48,3 +46,9 @@ class CrossoveredBudgetTransferLine(models.Model):
         "res.currency", related="transfer_id.currency_id", store=True)
     transfered_amount = fields.Monetary(
         string="Monto transferido", required=True, readonly=True)
+    origin_general_budget_id = fields.Many2one(
+        "account.budget.post", string="Posición presupuestaria origen",
+        required=True, readonly=True)
+    destination_general_budget_id = fields.Many2one(
+        "account.budget.post", string="Posición presupuestaria destino",
+        required=True, readonly=True)

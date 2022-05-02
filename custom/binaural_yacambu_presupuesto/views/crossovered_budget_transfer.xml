@@ -25,7 +25,6 @@
 		    <field name="cancelled_budget_id"/>
 		    <field name="new_origin_budget_id"/>
 		    <field name="destination_budget_id"/>
-		    <field name="general_budget_id"/>
 		    <field name="origin_available_amount"/>
 		    <field name="amount_to_be_transfered"/>
 		    <field name="destination_available_amount"/>
@@ -57,7 +56,6 @@
 				<field name="origin_available_amount"/>
 			    </group>
 			    <group>
-			    	<field name="general_budget_id"/>
 				<field name="destination_budget_id"/>
 		    		<field name="amount_to_be_transfered"/>
 		    		<field name="destination_available_amount"/>
@@ -68,6 +66,8 @@
 			    <page name="transfer_lines" string="Líneas de transferencia">
 				<field name="line_ids">
 				    <tree string="Líneas de transferencia">
+					<field name="origin_general_budget_id"/>
+					<field name="destination_general_budget_id"/>
 					<field name="origin_analytic_account_id"/>
 					<field name="destination_analytic_account_id"/>
 					<field name="transfered_amount"/>

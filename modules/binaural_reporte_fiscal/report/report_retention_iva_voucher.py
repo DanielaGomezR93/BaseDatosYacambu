@@ -1,12 +1,14 @@
 from odoo import api, models
+import logging
 
-
+_logger = logging.getLogger()
 class ReportRetentionIvaVoucher(models.AbstractModel):
     _name = "report.binaural_reporte_fiscal.template_retention_iva_voucher"
 
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        _logger.warning(docids)
         model = self.env.context.get("active_model")
         docs = self.env["account.retention"].browse(docids)
         return {

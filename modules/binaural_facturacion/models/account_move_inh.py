@@ -877,6 +877,15 @@ class AccountMoveBinauralFacturacion(models.Model):
 class AcoountMoveLineBinauralFact(models.Model):
     _inherit = 'account.move.line'
 
+    #Validar que no se agregar dos impuestos a la misma linea de factura
+    @api.onchange('tax_ids')
+    def onchange_list_taxes(self):
+        for line in self:
+            _logger.warning([tax for tax in line.mapped('tax_ids')])
+            if len([tax for tax in line.mapped('tax_ids')]) > 1:
+                raise UserError("No puede agregar dos impuestos a la misma linea de factura")
+
+
     # validar que el precio unitario no sea mayor al costo del producto, basado en la configuracion
     @api.onchange('price_unit', 'product_id')
     def onchange_price_unit_check_cost(self):

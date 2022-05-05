@@ -62,6 +62,9 @@ class WizardAccountingReports(models.TransientModel):
                 ('Imponible8', 0.00),
                 ('%8', 0.00),
                 ('Impuesto8', 0.00),
+                ('Imponible31', 0.00),
+                ('%31', 0,00),
+                ('Impuesto31', 0.00),
                 ('Retenciones', 0.00),
                 ('Comprobante de Ret.', ''),
                 ('Fecha de Comprobante', ''),
@@ -181,6 +184,8 @@ class WizardAccountingReports(models.TransientModel):
         total_5 = 0.00
         total_6 = 0.00
         total_7 = 0.00
+        total_8 = 0.00
+        total_9 = 0.00
         range_start = 'Desde: ' + datetime.strptime(start, '%Y-%m-%d').strftime('%d/%m/%Y')
         range_end = 'Hasta: ' + datetime.strptime(end, '%Y-%m-%d').strftime('%d/%m/%Y')
         worksheet2 = workbook.add_worksheet(name)
@@ -189,7 +194,8 @@ class WizardAccountingReports(models.TransientModel):
         worksheet2.set_column('E:I', 20)
         worksheet2.set_column('J:J', 30)
         worksheet2.set_column('K:R', 20)
-        worksheet2.set_column('S:T', 30)
+        worksheet2.set_column('S:T', 20)
+        worksheet2.set_column('U:W', 20)
         worksheet2.write('A1', company.name)
         worksheet2.write('A2', name)
         worksheet2.write('A3', company.vat)
@@ -197,6 +203,7 @@ class WizardAccountingReports(models.TransientModel):
         worksheet2.write('A5', range_end)
         worksheet2.merge_range('L5:N5', 'COMPRAS INTERNAS ALÍCUOTA GENERAL', merge_format)
         worksheet2.merge_range('O5:Q5', 'COMPRAS INTERNAS ALÍCUOTA GENERAL', merge_format)
+        worksheet2.merge_range('R5:T5', 'ALÍCUOTA DEL 31 IMPUESTO AL LUJO', merge_format)
         worksheet2.write('A6', 'Nª de Ope')
         worksheet2.write('B6', 'Fecha')
         worksheet2.write('C6', 'R.I.F')
@@ -214,9 +221,12 @@ class WizardAccountingReports(models.TransientModel):
         worksheet2.write('O6', 'Imponible')
         worksheet2.write('P6', '%')
         worksheet2.write('Q6', 'Impuesto')
-        worksheet2.write('R6', 'Retenciones')
-        worksheet2.write('S6', 'Comprobante de Ret.')
-        worksheet2.write('T6', 'Fecha de Comprobante')
+        worksheet2.write('R6', 'Imponible')
+        worksheet2.write('S6', '%')
+        worksheet2.write('T6', 'Impuesto')
+        worksheet2.write('U6', 'Retenciones')
+        worksheet2.write('V6', 'Comprobante de Ret.')
+        worksheet2.write('W6', 'Fecha de Comprobante')
         worksheet2.set_row(5, 20, merge_format)
         columnas = list(datos.columns.values)
         columnas_resumen = list(datos_resumen.columns.values)
@@ -252,6 +262,8 @@ class WizardAccountingReports(models.TransientModel):
             total_5 += data[i][14]
             total_6 += data[i][16]
             total_7 += data[i][17]
+            total_8 += data[i][19]
+            total_9 += data[i][20]
             i += 1
         worksheet2.write_number(col2, 9, float(total_1), currency_format)
         worksheet2.write_number(col2, 10, float(total_2), currency_format)
@@ -260,6 +272,8 @@ class WizardAccountingReports(models.TransientModel):
         worksheet2.write_number(col2, 14, float(total_5), currency_format)
         worksheet2.write_number(col2, 16, float(total_6), currency_format)
         worksheet2.write_number(col2, 17, float(total_7), currency_format)
+        worksheet2.write_number(col2, 19, float(total_8), currency_format)
+        worksheet2.write_number(col2, 20, float(total_9), currency_format)
         cells = xlsxwriter.utility.xl_range(6, 0, col2, col3)
         worksheet2.add_table(cells, {'data': data, 'total_row': True, 'columns': columns2, 'header_row': False})
         encabezado = 4 + len(data) + 5

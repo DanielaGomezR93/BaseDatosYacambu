@@ -36,6 +36,9 @@ class BookPurchaseReport(models.TransientModel):
             ('Imponible8', 0.00),
             ('%8', 0.00),
             ('Impuesto8', 0.00),
+            ('Imponible31', .00),
+            ('%31', 0.00),
+            ('Impuesto31', 0.00),
             ('Retenciones', 0.00),
             ('Comprobante de Ret.', ''),
             ('Fecha de Comprobante', ''),
@@ -67,11 +70,14 @@ class BookPurchaseReport(models.TransientModel):
             base8 = 0.00
             imp16 = 0.00
             imp8 = 0.00
+            base31 = 0.00
+            imp31 = 0.00
             not_gravable = 0.00
             if self.currency_sistem:
                 for line in i.amount_by_group:
                     tax_id = self.env['account.tax'].search(
                         [('tax_group_id', '=', line[6]), ('type_tax_use', '=', 'purchase')], limit=1)
+                    _logger.warning(line)
                     if tax_id.amount > 0:
                         if tax_id.amount == 16:
                             base16 = line[2]
@@ -79,6 +85,9 @@ class BookPurchaseReport(models.TransientModel):
                         if tax_id.amount == 8:
                             base8 = line[2]
                             imp8 = line[1]
+                        if tax_id.amount == 31:
+                            base31 = line[2]
+                            imp31 = line[1]
                         base += line[2]
                     else:
                         not_gravable += line[2]
@@ -93,6 +102,9 @@ class BookPurchaseReport(models.TransientModel):
                         if tax_id.amount == 8:
                             base8 = line[2]
                             imp8 = line[1]
+                        if tax_id.amount == 31:
+                            base31 = line[2]
+                            imp31 = line[1]
                         base += line[2]
                     else:
                         not_gravable += line[2]
@@ -132,6 +144,9 @@ class BookPurchaseReport(models.TransientModel):
                     dict['Imponible8'] = base8 if i.move_type in ['in_invoice', 'in_debit'] else -base8
                     dict['%8'] = 0.08
                     dict['Impuesto8'] = imp8 if i.move_type in ['in_invoice', 'in_debit'] else -imp8
+                    dict['Imponible31'] = base31 if i.move_type in ['in_invoice', 'in_debit'] else -base31
+                    dict['%31'] = 0.31
+                    dict['Impuesto31'] = imp31 if i.move_type in ['in_invoice', 'in_debit'] else -imp31
                     dict['Retenciones'] = amount_retention if i.move_type in ['in_invoice',
                                                                               'in_debit'] else -amount_retention
                 else:
@@ -145,6 +160,9 @@ class BookPurchaseReport(models.TransientModel):
                     dict['Imponible8'] = base8 if i.move_type in ['in_invoice', 'in_debit'] else -base8
                     dict['%8'] = 0.08
                     dict['Impuesto8'] = imp8 if i.move_type in ['in_invoice', 'in_debit'] else -imp8
+                    dict['Imponible31'] = base31 if i.move_type in ['in_invoice', 'in_debit'] else -base31
+                    dict['%31'] = 0.31
+                    dict['Impuesto31'] = imp31 if i.move_type in ['in_invoice', 'in_debit'] else -imp31
                     dict['Retenciones'] = amount_retention if i.move_type in ['in_invoice',
                                                                               'in_debit'] else -amount_retention
                 dict['Comprobante de Ret.'] = retention_number
@@ -163,6 +181,9 @@ class BookPurchaseReport(models.TransientModel):
                 dict['Imponible8'] = 0.00
                 dict['%8'] = 0.08
                 dict['Impuesto8'] = 0.00
+                dict['Imponible31'] = 0.00
+                dict['%31'] = 0.00
+                dict['Impuesto31'] = 0.00
                 dict['Retenciones'] = 0.00
                 dict['Comprobante de Ret.'] = ''
                 dict['Fecha de Comprobante'] = ''
@@ -245,12 +266,12 @@ class BookPurchaseReport(models.TransientModel):
             dict.update(dic)
             dict['_1'] = 5
             dict['_2'] = 'Compras Internas Gravadas por Alícuota General más Adicional'
-            dict['_3'] = 0.00
-            dict['_4'] = 0.00
-            dict['_5'] = 0.00
-            dict['_6'] = 0.00
-            dict['_7'] = 0.00
-            dict['_8'] = 0.00
+            dict['_3'] = sum_tabla_fan['Imponible31'] + sum_tabla_nd['Imponible31']
+            dict['_4'] = sum_tabla_fan['Impuesto31'] + sum_tabla_nd['Impuesto31']
+            dict['_5'] = sum_tabla_nc['Imponible31'] 
+            dict['_6'] = sum_tabla_nc['Impuesto31']
+            dict['_7'] = sum_tabla_fan['Imponible31'] + sum_tabla_nd['Imponible31'] + sum_tabla_nc['Imponible31']
+            dict['_8'] = sum_tabla_fan['Impuesto31'] + sum_tabla_nd['Impuesto31'] + sum_tabla_nc['Impuesto31']
             lista.append(dict)
             dict = OrderedDict()
             dict.update(dic)

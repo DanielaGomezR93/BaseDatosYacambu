@@ -3,7 +3,7 @@ from datetime import datetime
 
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
 import math
-from odoo.tools import float_compare, date_utils, email_split, email_re
+from odoo.tools import float_compare, date_utils, email_split, email_re, float_round
 from odoo.tools.misc import formatLang, format_date, get_lang
 from .. models import funtions_retention
 
@@ -84,7 +84,6 @@ class AccountRetentionBinauralFacturacion(models.Model):
                     record.amount_base_ret += line.base_ret
                     record.amount_imp_ret += line.imp_ret
                     record.total_tax_ret += line.amount_tax_ret
-
                     record.foreign_amount_base_ret += line.foreign_base_ret
                     record.foreign_amount_imp_ret += line.foreign_imp_ret
                     record.foreign_total_tax_ret += line.foreign_amount_tax_ret
@@ -101,6 +100,7 @@ class AccountRetentionBinauralFacturacion(models.Model):
                         record.amount_total_facture += total_sum
                         record.amount_imp_ret += line.iva_amount
                         record.total_tax_ret += line.retention_amount
+                        _logger.warning(float_round(line.retention_amount, precision_digits=2))
 
                         record.foreign_amount_total_facture += foreign_total_sum
                         record.foreign_amount_imp_ret += line.foreign_iva_amount
@@ -118,6 +118,9 @@ class AccountRetentionBinauralFacturacion(models.Model):
                     else:
                         _logger.info('tipo de factura3')
                         _logger.info(line.invoice_type)
+            record.total_tax_ret = float_round(record.total_tax_ret, precision_digits=2)
+            record.foreign_total_tax_ret = float_round(record.total_tax_ret, precision_digits=2)
+            _logger.warning(record.total_tax_ret)
 
     def action_emitted(self):
         today = datetime.now()

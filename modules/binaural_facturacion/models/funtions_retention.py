@@ -254,10 +254,11 @@ def create_move_refund_retention(self, line_ret, ret_line, account, journal, amo
         else:
             self.env['account.move.line'].create(line_ret)
     else:
-        if self.type in ['iva']:
+        if self.type_retention in ['iva']:
             cta_conf_supplier = int(self.env['ir.config_parameter'].sudo().get_param('account_retention_iva'))
         else:
             cta_conf_supplier = int(self.env['ir.config_parameter'].sudo().get_param('account_retention_islr'))
+    
         cta_conf_supplier_id = self.env['account.account'].search([('id', '=', cta_conf_supplier)], limit=1)
         line_ret.append((0, 0, {
             'name': 'Cuentas por Pagar Proveedores (R.IVA)',

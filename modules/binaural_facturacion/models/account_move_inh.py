@@ -215,7 +215,7 @@ class AccountMoveBinauralFacturacion(models.Model):
     inverse_rate = fields.Float(string="Tasa Inversa", digits=(16,15),
                                 compute="_compute_inverse_rate", store=True)
     foreign_currency_date = fields.Date(
-        string="Fecha", default=fields.Date.today(), )
+        string="Fecha de Tasa", default=fields.Date.today(), )
 
     foreign_amount_untaxed = fields.Monetary(string='Base Imponible', store=True, readonly=True,
                                              compute='_amount_all_foreign',

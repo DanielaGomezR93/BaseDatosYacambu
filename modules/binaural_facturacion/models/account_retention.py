@@ -335,6 +335,15 @@ class AccountRetentionBinauralFacturacion(models.Model):
             for index, move_line in enumerate(move):
                 facture[index].js_assign_outstanding_line(move_line.id)
         else:
+            if self.type_retention in ['iva']:
+                sequence = self.sequence_iva_retention()
+                correlative = sequence.next_by_code('retention.iva.control.number')
+            else:
+                sequence = self.sequence_islr_retention()
+                correlative = sequence.next_by_code('retention.islr.control.number')
+            today = datetime.now()                               
+            number = str(self.date.year) + '{:02d}'.format(self.date.month) + correlative
+            self.write({'correlative': correlative, 'number': number})
             for ret_line in self.retention_line:
                 line_ret = []
                 if ret_line.retention_amount > 0:
@@ -344,16 +353,7 @@ class AccountRetentionBinauralFacturacion(models.Model):
                         if self.round_half_up(ret_line.retention_amount, decimal_places) <= self.round_half_up(
                                 ret_line.invoice_id.amount_tax, decimal_places) or self.type_retention in ['islr']:
                             cxp = funtions_retention.search_account(self, ret_line)
-                            if cxp and journal_purchase:
-                                if self.type_retention in ['iva']:
-                                    sequence = self.sequence_iva_retention()
-                                    correlative = sequence.next_by_code('retention.iva.control.number')
-                                else:
-                                    sequence = self.sequence_islr_retention()
-                                    correlative = sequence.next_by_code('retention.islr.control.number')
-                                today = datetime.now()                               
-                                number = str(ret_line.invoice_id.date.year) + '{:02d}'.format(ret_line.invoice_id.date.month) + correlative
-                                self.write({'correlative': correlative, 'number': number})
+
                             if ret_line.invoice_id.move_type not in ['in_refund']:
                                 # Crea los apuntes contables para las facturas, Nota debito
                                 # Apuntes
@@ -416,6 +416,7 @@ class AccountRetentionBinauralFacturacion(models.Model):
                     _logger.info(ret_line.retention_id.number)
                     ret_line.invoice_id.write(
                         {'apply_retention_islr': True, 'islr_voucher_number': ret_line.retention_id.number})
+            
             moves = self.env['account.move.line'].search(
                 [('move_id', 'in', move_ids), ('name', '=', 'Cuentas por Pagar Proveedores (R.IVA)')])
             for mv in moves:

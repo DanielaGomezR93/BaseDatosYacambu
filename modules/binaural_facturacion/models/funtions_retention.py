@@ -88,19 +88,7 @@ def load_line_retention(self, data, move_id=False):
                                             'foreign_iva_amount': tax[1] * facture_line_retention.foreign_currency_rate,
                                             'foreign_retention_amount': tax[1] * (facture_line_retention.partner_id.withholding_type.value/100) * value_rate,
                                             'foreign_currency_rate': facture_line_retention.foreign_currency_rate}))
-                                """elif self.type_retention in ['islr']:
-        if not facture_line_retention.apply_retention_islr and facture_line_retention.payment_state in [\
-                'not_paid', 'partial']:
-            data.append((0, 0, {'invoice_id': facture_line_retention.id, 'is_retention_client': True,
-                                'name': 'Retención ISLR Proveedor',
-                                'facture_amount': facture_line_retention.amount_untaxed,
-                                'facture_total': facture_line_retention.amount_total,
-                                'iva_amount': facture_line_retention.amount_tax,
-                                'invoice_type': facture_line_retention.move_type,
-                                'porcentage_retention': facture_line_retention.partner_id.withholding_type.value,
-                                'retention_amount': facture_line_retention.amount_tax * (
-                                            facture_line_retention.partner_id.withholding_type.value / 100),
-                                }))"""
+                            
         
     return data
 
@@ -129,6 +117,7 @@ def search_account(self, ret_line):
     
 def create_move_invoice_retention(self, line_ret, ret_line, account, journal, amount_edit, decimal_places, new_move, move_id):
     if self.type in ['out_invoice']:
+        _logger.warning(f"aaaa {self.number}")
         line_ret.append((0, 0, {
             'name': 'Cuentas por Cobrar Cientes (R)',
             'account_id': account,
@@ -184,6 +173,7 @@ def create_move_invoice_retention(self, line_ret, ret_line, account, journal, am
                 ret_line.retention_amount, decimal_places),
             'credit': 0,
         }))
+        _logger.warning(f'aaaaaaaaaaaaaaaaaaaa {self.number}')
         line_ret.append((0, 0, {
             'name': 'RC-' + self.number + "-" + ret_line.invoice_id.name,
             'account_id': cta_conf_supplier_id.id,
@@ -238,7 +228,7 @@ def create_move_refund_retention(self, line_ret, ret_line, account, journal, amo
             'move_id': move_id
         }))
         # Asiento Contable
-        if new_move:
+        if new_move:      
             move_obj = self.env['account.move'].create({
                 'name': 'RIV-' + self.number + "-" + ret_line.invoice_id.name if self.type_retention in ['iva'] else 'RIS-' + self.number + "-" + ret_line.invoice_id.name,
                 'date': self.date_accounting,

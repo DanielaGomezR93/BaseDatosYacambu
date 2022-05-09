@@ -29,7 +29,7 @@
 		    <notebook>
 			<page string="Líneas del presupuesto de origen">
 			    <field name="origin_budget_line_ids">
-				<tree string="Líneas del presupuesto de origen" edit="false" create="false" delete="false">
+				<tree string="Líneas del presupuesto de origen" create="false" delete="false">
 				    <field name="general_budget_id"/>
 				    <field name="analytic_account_id"/>
 				    <field name="date_from"/>

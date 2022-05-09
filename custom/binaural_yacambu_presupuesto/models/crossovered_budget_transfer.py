@@ -36,10 +36,7 @@ class CrossoveredBudgetTransferLine(models.Model):
     transfer_id = fields.Many2one(
         "crossovered.budget.transfer", string="Transferencia",
         required=True, readonly=True)
-    origin_analytic_account_id = fields.Many2one(
-        "account.analytic.account", string="Cuenta origen",
-        required=True, readonly=True)
-    destination_analytic_account_id = fields.Many2one(
+    analytic_account_id = fields.Many2one(
         "account.analytic.account", string="Cuenta destino",
         required=True, readonly=True)
     currency_id = fields.Many2one(

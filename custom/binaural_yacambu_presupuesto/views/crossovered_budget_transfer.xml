@@ -68,8 +68,7 @@
 				    <tree string="Líneas de transferencia">
 					<field name="origin_general_budget_id"/>
 					<field name="destination_general_budget_id"/>
-					<field name="origin_analytic_account_id"/>
-					<field name="destination_analytic_account_id"/>
+					<field name="analytic_account_id"/>
 					<field name="transfered_amount"/>
 				    </tree>
 				</field>

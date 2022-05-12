@@ -6,7 +6,7 @@ class HrHeadquarter(models.Model):
     _description = "Sede Administrativa"
 
     name = fields.Char(string="Nombre", required=True)
-    code = fields.Char(string="Código", required=True)
+    code = fields.Char(string="Código")
     active = fields.Boolean(default=True)
     street = fields.Char(string="Calle")
     street2 = fields.Char(string="Calle 2")
@@ -32,5 +32,8 @@ class HrHeadquarter(models.Model):
     def name_get(self):
         result = []
         for headquarter in self:
-            result.append((headquarter.id, "[%s]%s" % (headquarter.code, headquarter.name)))
+            if headquarter.code:
+                result.append((headquarter.id, "[%s]%s" % (headquarter.code, headquarter.name)))
+            else:
+                result.append((headquarter.id, "%s" % (headquarter.name)))
         return result

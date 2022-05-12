@@ -17,8 +17,33 @@
             <field name="model">hr.contract</field>
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
             <field name="arch" type="xml">
+		<form position="attributes">
+		    <attribute name="delete">false</attribute>
+		</form>
 		<field name="job_id" position="after">
 		    <field name="nominal_position_id"/>
+		</field>
+	    </field>
+    	</record>
+
+	<record id="view_hr_contract_tree_inherit_yacambu_nomina" model="ir.ui.view">
+            <field name="name">hr.contract.tree.inherit.yacambu.nomina.view</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_tree" />
+            <field name="arch" type="xml">
+		<tree position="attributes">
+		    <attribute name="delete">false</attribute>
+		</tree>
+		<field name="employee_id" position="after">
+		    <field name="department_id"/>
+		</field>
+		<field name="job_id" position="after">
+		    <field name="nominal_position_id"/>
+		    <field name="wage_type"/>
+		    <field name="wage"
+			   attrs="{'invisible': [('wage_type','=','hourly')]}"/>
+		    <field name="hourly_wage"
+			   attrs="{'invisible': [('wage_type','=','monthly')]}"/>
 		</field>
 	    </field>
     	</record>

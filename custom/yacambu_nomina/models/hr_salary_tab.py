@@ -10,10 +10,12 @@ class HrSalaryTab(models.Model):
 
     name = fields.Char(string="Nombre", related="nominal_position_id.name")
     active = fields.Boolean(default=True)
+    state = fields.Selection([
+        ("active", "Vigente"),
+        ("inactive", "Inactivo"),
+    ], string="Estatus", compute="_compute_state")
     date_from = fields.Date(
         string="Vigente desde", required=True, tracking=True)
-    date_to = fields.Date(
-        string="Hasta", required=True, tracking=True)
     nominal_position_id = fields.Many2one(
         "hr.nominal.position", string="Cargo nominal", required=True, tracking=True)
     wage_type = fields.Selection(
@@ -42,3 +44,8 @@ class HrSalaryTab(models.Model):
                     if tab.wage_type == "hourly":
                         c.hourly_wage = tab.hourly_wage
             tab.message_post(body="Salarios Actualizados.")
+
+    @api.depends("active")
+    def _compute_state(self):
+        for tab in self:
+            tab.state = "active" if tab.active else "inactive"

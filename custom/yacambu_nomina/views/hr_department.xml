@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_yacambu_nomina_hr_department_form" model="ir.ui.view">
+            <field name="name">yacambu.nomina.inherit.hr.department.view.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+		<field name="manager_id" position="before">
+		    <field name="code"/>
+		</field>
+            </field>
+        </record>
+    </data>
+</odoo>

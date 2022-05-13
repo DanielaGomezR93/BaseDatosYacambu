@@ -1,5 +1,6 @@
 from . import hr_allowance
 from . import hr_contract
+from . import hr_department
 from . import hr_employee
 from . import hr_employee_salary_change
 from . import hr_headquarter

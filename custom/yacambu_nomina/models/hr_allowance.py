@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class HrAllowance(models.Model):
@@ -7,10 +8,31 @@ class HrAllowance(models.Model):
 
     name = fields.Char(string="Nombre", required=True)
     code = fields.Char(string="Código", required=True)
-    active = fields.Boolean(default=True)
+    state = fields.Selection([
+        ("active", "Activo"),
+        ("inactive", "Inactivo")
+    ], string="Estado", default="active")
     value = fields.Float(string="Valor", required=True)
     description = fields.Char(string="Descripción", required=True)
 
+    _sql_constraints = [("name_unique", "UNIQUE(name)",
+                         _("Ya existe un complemento con ese nombre.")),
+                        ("code_unique", "UNIQUE(code)",
+                         _("Ya existe un complemento con ese código."))]
+
+    def action_deactivate(self):
+        for allowance in self:
+            lines = self.env["hr.allowance.line"].search([
+                ("allowance_id", '=', allowance.id), ("employee_id", '!=', False)])
+            if any(lines):
+                raise UserError(_("No se puede desactivar este complemento porque está asociado a un empleado"))
+            allowance.state = "inactive"
+            return True
+
+    def action_activate(self):
+        for allowance in self:
+            allowance.state = "active"
+            return True
 
 class HrAllowanceLine(models.Model):
     _name = "hr.allowance.line"

@@ -38,6 +38,7 @@
 			<button name="action_update" type="object" string="Actualizar Tabulador"
 				attrs="{'invisible': [('active', '=', False)]}"
 				confirm="¿Deseas Actualizar los Salarios?"/>
+			<field name="state" widget="statusbar"/>
 		    </header>
 		    <sheet>
 			<group>

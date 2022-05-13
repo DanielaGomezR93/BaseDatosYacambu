@@ -18,7 +18,7 @@
 			<filter name="group_wage_type" string="Tipo de Salario"
 				domain="[]" context="{'group_by': 'wage_type'}"/>
 			<filter name="group_date" string="Fecha"
-				domain="[]" context="{'group_by': 'wage_type'}"/>
+				domain="[]" context="{'group_by': 'date'}"/>
 		    </group>
 		</search>
 	    </field>
@@ -36,6 +36,17 @@
 		    <field name="wage"/>
 		    <field name="hourly_wage"/>
 		</tree>
+	    </field>
+	</record>
+
+	<record id="hr_employee_salary_change_view_pivot" model="ir.ui.view">
+	    <field name="name">hr.employee.salary.change.view.pivot</field>
+	    <field name="model">hr.employee.salary.change</field>
+	    <field name="arch" type="xml">
+		<pivot string="Variaciones Salariales">
+		    <field name="employee_id" type="row"/>
+		    <field name="contract_id" type="row"/>
+		</pivot>
 	    </field>
 	</record>
 

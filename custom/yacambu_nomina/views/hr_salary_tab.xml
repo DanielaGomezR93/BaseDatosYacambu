@@ -20,7 +20,6 @@
 		<tree delete="false">
 		    <field name="active" invisible="1"/>
 		    <field name="date_from"/>
-		    <field name="date_to"/>
 		    <field name="nominal_position_id"/>
 		    <field name="wage_type"/>
 		    <field name="food_allowance"/>
@@ -45,16 +44,13 @@
 			    <field name="active" invisible="1"/>
 			    <group>
 				<field name="nominal_position_id"/>
+				<field name="date_from"/>
 				<field name="wage_type"/>
+			    </group>
+			    <group>
 				<field name="food_allowance"/>
 				<field name="allowance"/>
 				<field name="aid"/>
-			    </group>
-			    <group string="Vigente">
-				<label for="date_from" string="Desde"/>
-				<field name="date_from" nolabel="1"/>
-				<label for="date_to" string="Hasta"/>
-				<field name="date_to" nolabel="1"/>
 			    </group>
 			</group>
 			<group string="Salario">

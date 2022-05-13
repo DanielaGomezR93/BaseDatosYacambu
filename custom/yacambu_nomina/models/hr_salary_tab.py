@@ -12,8 +12,6 @@ class HrSalaryTab(models.Model):
     active = fields.Boolean(default=True)
     date_from = fields.Date(
         string="Vigente desde", required=True, tracking=True)
-    date_to = fields.Date(
-        string="Hasta", required=True, tracking=True)
     nominal_position_id = fields.Many2one(
         "hr.nominal.position", string="Cargo nominal", required=True, tracking=True)
     wage_type = fields.Selection(

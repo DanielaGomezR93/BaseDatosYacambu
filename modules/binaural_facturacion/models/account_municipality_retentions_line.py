@@ -15,9 +15,9 @@ class MunicipalityRetentionsLine(models.Model):
 
     name = fields.Char(string="Descripción", default="RET-Municipal")
     retention_id = fields.Many2one(
-        'account.municipality.retentions', string="Retencion")
+        'account.municipality.retentions', string="Retencion", ondelete='cascade')
     invoice_id = fields.Many2one(
-        'account.move', string='Factura', required=True)
+        'account.move', string='Factura', required=True, ondelete='cascade')
     currency_id = fields.Many2one(
         'res.currency', string='Moneda', default=lambda self: self.env.user.company_id.currency_id)
     total_invoice = fields.Monetary(

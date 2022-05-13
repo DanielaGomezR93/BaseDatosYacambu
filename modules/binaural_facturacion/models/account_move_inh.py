@@ -829,6 +829,7 @@ class AccountMoveBinauralFacturacion(models.Model):
         _logger.warning("Municipality taxdasds[]")
         if any(self.municipality_retentions_line_ids) and self.state == 'draft' and self.municipality_tax:
             _logger.warning("Municipality tax")
+            _logger.warning(f'aaaaa veeeer {self.municipality_retentions_line_ids}  ')
             for retention_line in self.municipality_retentions_line_ids:
                 retention_line._calculate_retention()
 

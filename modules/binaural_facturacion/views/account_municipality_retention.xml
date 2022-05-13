@@ -7,6 +7,7 @@
                 <header>
                     <button name="action_validate" attrs="{'invisible': [('state','!=', 'draft')]}" type="object" string="Validar" class="btn btn-primary" />
                     <button name="action_open_wizard" type="object" string="Descargar Comprobante" class="btn btn-primary" />
+                    <button name="action_cancel" string="Anular" type="object" />
                     <field name="state" widget="statusbar" nolabel="1" />
                 </header>
                 <sheet>

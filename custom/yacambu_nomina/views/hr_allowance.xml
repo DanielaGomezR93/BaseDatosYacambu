@@ -9,7 +9,8 @@
 		    <field name="name" string="Complemento Salarial"/>
 		    <field name="code" string="Código"/>
 		    <separator/>
-		    <filter string="Archivado" name="inactive" domain="[('active', '=', False)]"/>
+		    <filter string="Activo" name="active" domain="[('state', '=', 'active')]"/>
+		    <filter string="Inactivo" name="inactive" domain="[('state', '=', 'inactive')]"/>
 		</search>
 	    </field>
 	</record>
@@ -19,7 +20,6 @@
 	    <field name="model">hr.allowance</field>
 	    <field name="arch" type="xml">
 		<tree editable="bottom" delete="false">
-		    <field name="active" invisible="1"/>
 		    <field name="name"/>
 		    <field name="code"/>
 		    <field name="value"/>
@@ -58,6 +58,11 @@
 	    <field name="arch" type="xml">
 		<form delete="false">
 		    <header>
+			<button name="action_activate" type="object"
+				string="Activar" states="inactive"/>
+			<button name="action_deactivate" type="object"
+				string="Desactivar" states="active"/>
+			<field name="state" widget="statusbar"/>
 		    </header>
 		    <sheet>
                         <div class="oe_title">
@@ -66,7 +71,6 @@
                             </h1>
                         </div>
 			<group>
-			    <field name="active" invisible="1"/>
 			    <group>
 			    	<field name="code"/>
 			    	<field name="value"/>
@@ -83,6 +87,7 @@
 	<record id="hr_allowance_action" model="ir.actions.act_window">
 	    <field name="name">Complementos Salariales</field>
 	    <field name="res_model">hr.allowance</field>
+	    <field name="context">{"search_default_active":1}</field>
 	    <field name="view_mode">kanban,tree,form</field>
 	</record>
     </data>
